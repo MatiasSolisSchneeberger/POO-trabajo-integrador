@@ -6,12 +6,16 @@ public abstract class Socio {
     private int diasPrestamo;
     private ArrayList<Prestamo> prestamos;
 
+    //constructor
+
     Socio(int p_dniSocio, String p_nombre, int p_diasPrestamo) {
         this.setDniSocio(p_dniSocio);
         this.setNombre(p_nombre);
         this.setDiasPrestamo(p_diasPrestamo);
         this.setPrestamos(new ArrayList<>());
     }
+
+    // accesores
 
     public int getDniSocio() {
         return dniSocio;
@@ -52,4 +56,30 @@ public abstract class Socio {
     public boolean quitarPrestamo(Prestamo p_prestamo) {
         return this.getPrestamos().remove(p_prestamo);
     }
+
+    // metodos
+
+    public int cantLibrosPrestados() {
+        return this.getPrestamos().size();
+    }
+
+    public String toString() {
+        return "D.N.I.: " + this.getDniSocio() +
+                "||" + this.getNombre() +
+                " (" + this.soyDeLaClase() + ")" +
+                "|| Libros Prestados: " + this.cantLibrosPrestados();
+    }
+
+    public boolean puedePedir() {
+        //p[nombre] de paradigma de las funciones predicado
+        boolean pPuede = true;
+
+        for (Prestamo prestamo : this.getPrestamos()) {
+            prestamo.getClass();
+        }
+
+        return pPuede;
+    }
+
+    public abstract String soyDeLaClase();
 }
