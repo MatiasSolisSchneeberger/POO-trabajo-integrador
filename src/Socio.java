@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public abstract class Socio {
     private int dniSocio;
@@ -8,7 +9,7 @@ public abstract class Socio {
 
     // constructor
 
-    Socio(int p_dniSocio, String p_nombre, int p_diasPrestamo) {
+    public Socio(int p_dniSocio, String p_nombre, int p_diasPrestamo) {
         this.setDniSocio(p_dniSocio);
         this.setNombre(p_nombre);
         this.setDiasPrestamo(p_diasPrestamo);
@@ -71,14 +72,16 @@ public abstract class Socio {
     }
 
     public boolean puedePedir() {
-        //p[nombre] de paradigma de las funciones predicado
-        boolean pPuede = true;
+        Calendar hoy = Calendar.getInstance();
 
         for (Prestamo prestamo : this.getPrestamos()) {
-            prestamo.getClass();
+
+            if (prestamo.vencido(hoy)) {
+                return false;
+            }
         }
 
-        return pPuede;
+        return true;
     }
 
     public abstract String soyDeLaClase();
