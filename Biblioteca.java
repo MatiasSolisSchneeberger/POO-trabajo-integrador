@@ -6,23 +6,17 @@ import java.util.Calendar;
  */
 public class Biblioteca {
     private String nombre;
-    private ArrayList<Prestamo> prestamos;
     private ArrayList<Libro> libros;
     private ArrayList<Socio> socios;
-    private ArrayList<Socio> documentosSocios;
-    private ArrayList<Socio> docentesResponsables;
 
     /**
      * Constructor de la clase Biblioteca.
      * @param nombre Nombre de la biblioteca
      */
     public Biblioteca(String nombre) {
-        this.nombre = nombre;
-        this.prestamos = new ArrayList<>();
-        this.libros = new ArrayList<>();
-        this.socios = new ArrayList<>();
-        this.documentosSocios = new ArrayList<>();
-        this.docentesResponsables = new ArrayList<>();
+        this.setNombre(nombre);
+        this.setLibros(new ArrayList<>());
+        this.setSocios(new ArrayList<>());
     }
 
     // **** Getters y Setters
@@ -31,7 +25,7 @@ public class Biblioteca {
      * @return Nombre de la biblioteca
      */
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     /**
@@ -42,28 +36,14 @@ public class Biblioteca {
         this.nombre = nombre;
     }
 
-    /**
-     * Obtiene la lista de prestamos.
-     * @return Lista de prestamos
-     */
-    public ArrayList<Prestamo> getPrestamos() {
-        return prestamos;
-    }
 
-    /**
-     * Establece la lista de prestamos.
-     * @param prestamos Nueva lista de prestamos
-     */
-    public void setPrestamos(ArrayList<Prestamo> prestamos) {
-        this.prestamos = prestamos;
-    }
 
     /**
      * Obtiene la lista de libros.
      * @return Lista de libros
      */
     public ArrayList<Libro> getLibros() {
-        return libros;
+        return this.libros;
     }
 
     /**
@@ -79,7 +59,7 @@ public class Biblioteca {
      * @return Lista de socios
      */
     public ArrayList<Socio> getSocios() {
-        return socios;
+        return this.socios;
     }
 
     /**
@@ -90,37 +70,6 @@ public class Biblioteca {
         this.socios = socios;
     }
 
-    /**
-     * Obtiene la lista de documentos de socios.
-     * @return Lista de documentos de socios
-     */
-    public ArrayList<Socio> getDocumentosSocios() {
-        return documentosSocios;
-    }
-
-    /**
-     * Establece la lista de documentos de socios.
-     * @param documentosSocios Nueva lista de documentos de socios
-     */
-    public void setDocumentosSocios(ArrayList<Socio> documentosSocios) {
-        this.documentosSocios = documentosSocios;
-    }
-
-    /**
-     * Obtiene la lista de docentes responsables.
-     * @return Lista de docentes responsables
-     */
-    public ArrayList<Socio> getDocentesResponsables() {
-        return docentesResponsables;
-    }
-
-    /**
-     * Establece la lista de docentes responsables.
-     * @param docentesResponsables Nueva lista de docentes responsables
-     */
-    public void setDocentesResponsables(ArrayList<Socio> docentesResponsables) {
-        this.docentesResponsables = docentesResponsables;
-    }
 
     /**
      * Crea un nuevo libro y lo agrega a la biblioteca.
@@ -131,7 +80,7 @@ public class Biblioteca {
      */
     public void nuevoLibro(String titulo, int edicion, String editorial, int anio) {
         Libro libro = new Libro(titulo, edicion, editorial, anio);
-        libros.add(libro);
+        //Falta agregar metodo agregarLibro
     }
 
     /**
@@ -142,7 +91,7 @@ public class Biblioteca {
      */
     public void nuevoSocioEstudiante(int dniSocio, String nombre, String carrera) {
         Estudiante estudiante = new Estudiante(dniSocio, nombre, carrera);
-        socios.add(estudiante);
+        //falta agregar metodo agregarSocio
     }
 
     /**
@@ -153,7 +102,7 @@ public class Biblioteca {
      */
     public void nuevoSocioDocente(int dniSocio, String nombre, String area) {
         Docente docente = new Docente(dniSocio, nombre, area);
-        socios.add(docente);
+        //falta agregar metodo agregarSocio
     }
 
     /**
@@ -168,11 +117,9 @@ public class Biblioteca {
             return false;
         }
 
-        Prestamo prestamo = new Prestamo(fechaRetiro);
-        prestamo.registrarFechaDevolucion(fechaRetiro);
-
-        libro.ultimoPrestamo(prestamo);
-        prestamos.add(prestamo);
+        Prestamo prestamo = new Prestamo(fechaRetiro, socio, libro);
+        libro.agregarPrestamo(prestamo);
+        socio.agregarPrestamo(prestamo);
 
         return true;
     }
@@ -184,7 +131,7 @@ public class Biblioteca {
     public void devolverLibro(Libro libro) {
         if (libro.prestado()) {
             Prestamo prestamo = libro.ultimoPrestamo();
-            prestamo.devolucion(Calendar.getInstance());
+            prestamo.registrarFechaDevolucion(new GregorianCalendar());
         }
     }
 
@@ -196,11 +143,9 @@ public class Biblioteca {
     public int cantidadDeSociosPorTipo(String objeto) {
         int count = 0;
         for (Socio socio : socios) {
-            if (objeto.equals("Estudiante") && socio instanceof Estudiante) {
+            if (socio.soyDeLaClase().equals(objeto)) {
                 count++;
-            } else if (objeto.equals("Docente") && socio instanceof Docente) {
-                count++;
-            }
+            } 
         }
         return count;
     }
@@ -211,8 +156,10 @@ public class Biblioteca {
      */
     public ArrayList<Prestamo> prestamosVencidos() {
         ArrayList<Prestamo> vencidos = new ArrayList<>();
-        for (Prestamo prestamo : prestamos) {
-            if (prestamo.vencido(Calendar.getInstance())) {
+        for (Libro libro : this.getLibros
+        ()) {
+            Prestamo prestamo = libro.ultimoPrestamo();
+            if (prestamo.vencido(new GregorianCalendar())) {
                 vencidos.add(prestamo);
             }
         }
@@ -225,12 +172,19 @@ public class Biblioteca {
      * @return Socio encontrado o null si no existe
      */
     public Socio buscarSocio(int dni) {
-        for (Socio socio : socios) {
-            if (socio.getDniSocio() == dni) {
-                return socio;
-            }
+        //Completar
+    }
+
+     /**
+     * Genera una lista con los socios.
+     * @return String con los titulos de los libros
+     */
+    public String ListaDeSocios() {
+        StringBuilder titulos = new StringBuilder();
+        for (Socio Socio : this.getSocios()) {
+            titulos.append(libro.toString()).append("\n");
         }
-        return null;
+        return titulos.toString();
     }
 
     /**
@@ -263,8 +217,8 @@ public class Biblioteca {
      */
     public String listaDeDocentesResponsables() {
         StringBuilder lista = new StringBuilder();
-        for (Socio socio : docentesResponsables) {
-            if (socio instanceof Docente) {
+        for (Socio socio : this.getSocios()) {
+            if (socio.esResponsable()) {
                 lista.append(socio.toString()).append("\n");
             }
         }
@@ -281,12 +235,9 @@ public class Biblioteca {
             return "El libro no esta prestado";
         }
 
-        for (Socio socio : socios) {
-            Prestamo ultimoPrestamo = libro.ultimoPrestamo();
-            if (ultimoPrestamo != null && !ultimoPrestamo.vencido(Calendar.getInstance())) {
-                return socio.toString();
-            }
-        }
-        return "No se encontra el socio";
+        Prestamo ultimoPrestamo = libro.ultimoPrestamo();
+        Socio socio = ultimoPrestamo.getSocio();
+
+        return socio.getNombre();
     }
 }
