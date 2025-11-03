@@ -151,6 +151,14 @@ public class Biblioteca {
     }
 
     /**
+     * Obtiene una coleccion de docentes Responsables
+     * @return Lista de docentes responsables
+     */
+    public ArrayList<Socio> docentesResponsables() {
+        //Completar
+    }
+
+    /**
      * Obtiene la lista de prestamos vencidos.
      * @return Lista de prestamos vencidos
      */
@@ -182,9 +190,9 @@ public class Biblioteca {
     public String ListaDeSocios() {
         StringBuilder titulos = new StringBuilder();
         for (Socio Socio : this.getSocios()) {
-            titulos.append(libro.toString()).append("\n");
+            Socio.append(Socio.toString()).append("\n");
         }
-        return titulos.toString();
+        return Socio.toString();
     }
 
     /**
