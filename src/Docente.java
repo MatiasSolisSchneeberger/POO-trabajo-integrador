@@ -67,11 +67,12 @@ public class Docente extends Socio{
      */
     public void cambiarDiasDePrestamo(int p_dias){
         if (this.esResponsable()) {
-        // 1. Calcula los nuevos días. Falta un setter en Socio para asignar este valor.
         int nuevosDias = this.getDiasPrestamo() + p_dias;
-        // Faltaría llamar a un método setDiasPrestamo(nuevosDias)
+        // ¡USA EL SETTER PARA GUARDAR EL VALOR!
+        this.setDiasPrestamo(nuevosDias);
+        
         } else {
-        System.out.println("No se pueden agregar días: el docente no es responsable.");
+           System.out.println("No se pueden agregar días: el docente no es responsable.");
         }
     }
     
