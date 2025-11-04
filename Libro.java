@@ -41,8 +41,34 @@ public class Libro {
     public ArrayList<Prestamo> getPrestamos() {
         return this.prestamos;
     }
+    
+        // ------------------ Setters ------------------
+    public void setTitulo(String p_titulo) {
+        this.titulo = p_titulo;
+    }
 
+    public void setEdicion(int p_edicion) {
+        this.edicion = p_edicion;
+    }
+
+    public void setEditorial(String p_editorial) {
+        this.editorial = p_editorial;
+    }
+
+    public void setAnio(int p_anio) {
+        this.anio = p_anio;
+    }
+
+    public void setPrestamos(ArrayList<Prestamo> p_prestamos) {
+        this.prestamos = p_prestamos;
+    }
     // ------------------ Métodos principales ------------------
+    /**
+     * Quitar prestamo de la lista de prestamos
+     */
+    public void quitarPrestamo(Prestamo p_prestamo) {
+        this.prestamos.remove(p_prestamo);
+    }
 
     /**
      * Devuelve true si el libro está actualmente prestado
