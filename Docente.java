@@ -1,9 +1,9 @@
 import java.util.Calendar;
 /**
- * Write a description of class Docente here.
+ * class Docente.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author (Escobar Lucas) 
+ * @version (01/11/2025)
  */
 public class Docente extends Socio{
     private String area;
