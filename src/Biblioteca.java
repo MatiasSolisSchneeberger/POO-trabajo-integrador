@@ -173,11 +173,6 @@ public class Biblioteca {
         return contador;
     }
 
-    // Alias con tu nombre original para compatibilidad
-    public int cantidadDeSociosPortipo(String p_Objeto) { // <-- mantiene tu firma
-        return this.cantidadDeSociosPorTipo(p_Objeto);
-    }
-
     /**
      * Devuelve una colección con los préstamos vencidos al día de la fecha
      */
@@ -216,8 +211,8 @@ public class Biblioteca {
      * Indica quién tiene el libro; si no está prestado, lanza excepción
      */
     public String quienTieneElLibro(Libro p_libro) throws LibroNoPrestadoException {
-        if (p_libro == null) throw new LibroNoPrestadoException("El libro se encuentra en la biblioteca");
-
+        //if (p_libro == null) throw new LibroNoPrestadoException("El libro se encuentra en la biblioteca");
+        Prestamo ultimoPrestamo = libro.ultimoPrestamo();
         for (Libro libro : this.getLibros()) {
             if (libro.getTitulo().equalsIgnoreCase(p_libro.getTitulo()) &&
                 libro.getEdicion() == p_libro.getEdicion() &&
@@ -226,13 +221,14 @@ public class Biblioteca {
 
                 if (libro.prestado()) {
                     Prestamo ultimoPrestamo = libro.ultimoPrestamo();
-                    return "El libro está en posesión de: " + ultimoPrestamo.getSocio().getNombre();
+                    return "El libro está en posesión de: " + ultimoPrestamo.getSocio().getNombre() 
+                                                            + libro.getTitulo();
                 } else {
                     throw new LibroNoPrestadoException("El libro se encuentra en la biblioteca");
                 }
             }
         }
-        return "El libro no se encuentra en la biblioteca";
+        return ultimoPrestamo.getSocio().getNombre() + libro.getTitulo();
     }
 
     /**
@@ -256,13 +252,7 @@ public class Biblioteca {
             String lista = "Lista de Socios: \n";
             for (Map.Entry<Integer, Socio> e : this.getSocios().entrySet()) {
                 Socio s = e.getValue();
-                lista = lista
-                    + (++nroSocio) + ")"
-                    + "D.N.I.: " + s.getDniSocio()
-                    + " || " + s.getNombre()
-                    + " (" + s.soyDeLaClase() + ") || "
-                    + "Libros Prestados: " + s.cantLibrosPrestados()
-                    + "\n";
+            lista = s.toString() + "\n";
             }
             lista = lista
                 + "******\n"
@@ -313,10 +303,8 @@ public class Biblioteca {
     public String listaDeDocentesResponsables() {
         String docentes = "";
         for (Docente d : this.docentesResponsables()) {
-            docentes = docentes
-                + "* D.N.I.: " + d.getDniSocio() + " || "
-                + d.getNombre()
-                + " (" + d.soyDeLaClase() + ") || "
+            docentes = d.toString()
+                + " || "
                 + "Libros Prestados: " + d.cantLibrosPrestados()
                 + "\n";
         }
