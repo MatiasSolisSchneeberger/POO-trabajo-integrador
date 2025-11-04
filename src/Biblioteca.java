@@ -212,7 +212,7 @@ public class Biblioteca {
      */
     public String quienTieneElLibro(Libro p_libro) throws LibroNoPrestadoException {
         //if (p_libro == null) throw new LibroNoPrestadoException("El libro se encuentra en la biblioteca");
-        Prestamo ultimoPrestamo = libro.ultimoPrestamo();
+        Prestamo ultimoPrestamo = p_libro.ultimoPrestamo();
         for (Libro libro : this.getLibros()) {
             if (libro.getTitulo().equalsIgnoreCase(p_libro.getTitulo()) &&
                 libro.getEdicion() == p_libro.getEdicion() &&
@@ -220,9 +220,9 @@ public class Biblioteca {
                 libro.getAnio() == p_libro.getAnio()) {
 
                 if (libro.prestado()) {
-                    Prestamo ultimoPrestamo = libro.ultimoPrestamo();
-                    return "El libro está en posesión de: " + ultimoPrestamo.getSocio().getNombre() 
-                                                            + libro.getTitulo();
+                    Prestamo ultimoPrestamo1 = p_libro.ultimoPrestamo();
+                    return "El libro está en posesión de: " + ultimoPrestamo1.getSocio().getNombre() 
+                                                            + p_libro.getTitulo();
                 } else {
                     throw new LibroNoPrestadoException("El libro se encuentra en la biblioteca");
                 }
@@ -334,6 +334,6 @@ public class Biblioteca {
      */
     public void nuevoSocioDocente(int p_DniSocio, String p_Nombre, String p_Area) {
         // CAMBIO: por consigna, docentes suelen tener 5 días base; ajustá si tu ctor no lo pide
-        this.agregarSocio(new Docente(p_DniSocio, p_Nombre, 5, p_Area));
+        this.agregarSocio(new Docente(p_DniSocio, p_Nombre, p_Area));
     }
 }
