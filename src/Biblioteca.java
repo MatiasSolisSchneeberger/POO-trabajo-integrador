@@ -135,7 +135,7 @@ public class Biblioteca {
         Prestamo unPrestamo = new Prestamo(p_FechaRetiro, socioPrestar, libroPrestar);
         // Si el .jar hace auto-registro del préstamo, estas llamadas pueden ser innecesarias;
         // las dejamos por compatibilidad:
-        libroPrestar.agregarPrestamo(unPrestamo);
+        libroPrestar.prestar(unPrestamo);
         socioPrestar.agregarPrestamo(unPrestamo);
         return true;
     }
