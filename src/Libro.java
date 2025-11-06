@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Libro {
-    
+
     // ------------------ Atributos ------------------
     private String titulo;
     private int edicion;
@@ -13,11 +13,10 @@ public class Libro {
     // ------------------ Constructor ------------------
     
     public Libro(String p_titulo, int p_edicion, String p_editorial, int p_anio) {
-        this.titulo = p_titulo;
-        this.edicion = p_edicion;
-        this.editorial = p_editorial;
-        this.anio = p_anio;
-        this.prestamos = new ArrayList<Prestamo>();
+        this.setTitulo(p_titulo);
+        this.setEdicion(p_edicion);
+        this.setEditorial(p_editorial);
+        this.setAnio(p_anio);
     }
 
     // ------------------ Getters ------------------
