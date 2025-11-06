@@ -20,7 +20,7 @@ public class Libro {
     }
 
     // ------------------ Getters ------------------
-    
+
     public String getTitulo() {
         return this.titulo;
     }
@@ -40,8 +40,8 @@ public class Libro {
     public ArrayList<Prestamo> getPrestamos() {
         return this.prestamos;
     }
-    
-        // ------------------ Setters ------------------
+
+    // ------------------ Setters ------------------
     public void setTitulo(String p_titulo) {
         this.titulo = p_titulo;
     }
@@ -62,6 +62,7 @@ public class Libro {
         this.prestamos = p_prestamos;
     }
     // ------------------ Métodos principales ------------------
+
     /**
      * Quitar prestamo de la lista de prestamos
      */
@@ -125,6 +126,6 @@ public class Libro {
      */
     public String toString() {
         return this.titulo + " (" + this.edicion + "ª edición, " +
-               this.editorial + ", " + this.anio + ")";
+                this.editorial + ", " + this.anio + ")";
     }
 }
