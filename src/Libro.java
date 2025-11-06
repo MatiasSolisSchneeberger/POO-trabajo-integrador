@@ -95,7 +95,7 @@ public class Libro {
      * Registra un nuevo préstamo del libro si está disponible.
      * Retorna true si se pudo prestar, false si ya estaba ocupado.
      */
-    public boolean prestar(Prestamo p_prestamo) {
+    public boolean agregarPrestamo(Prestamo p_prestamo) {
         if (this.estaDisponible()) {
             this.prestamos.add(p_prestamo);
             return true;
@@ -106,7 +106,7 @@ public class Libro {
     /**
      * Marca el libro como devuelto, registrando la fecha en su último préstamo.
      */
-    public void devolver(java.util.Calendar p_fechaDevolucion) {
+    public void quitarPrestamo(java.util.Calendar p_fechaDevolucion) {
         Prestamo ultimo = this.ultimoPrestamo();
         if (ultimo != null && ultimo.getFechaDevolucion() == null) {
             ultimo.registrarFechaDevolucion(p_fechaDevolucion);
