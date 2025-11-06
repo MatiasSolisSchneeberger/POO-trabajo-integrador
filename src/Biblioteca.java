@@ -1,6 +1,3 @@
-// Descomenta solo si tu .jar usa paquete:
-// package biblioteca;
-
 import java.util.*; // Calendar, GregorianCalendar, ArrayList, HashMap, Map, Iterator, Set, LinkedHashSet
 
 /**
@@ -14,18 +11,21 @@ public class Biblioteca {
     private ArrayList<Libro> libros;
 
     // ================= Constructores
+
     /**
      * Constructor que instancia los atributos del objeto de la clase Biblioteca
+     *
      * @param p_nombre es el nombre de la biblioteca
      */
     public Biblioteca(String p_nombre) {
         this.setNombre(p_nombre);
         this.setSocios(new HashMap<>());
-        this.setLibros(new ArrayList<Libro>());
+        this.setLibros(new ArrayList<>());
     }
 
     /**
      * Constructor que instancia los atributos del objeto de la clase Biblioteca
+     *
      * @param p_nombre nombre
      * @param p_socios mapa de socios (dni->socio)
      * @param p_libros lista de libros
@@ -37,19 +37,36 @@ public class Biblioteca {
     }
 
     // ================= Setters (privados como en tu guía)
-    private void setNombre(String p_nombre) { this.nombre = p_nombre; }
-    private void setSocios(HashMap<Integer, Socio> p_Socios) { this.socios = p_Socios; }
-    private void setLibros(ArrayList<Libro> p_libros) { this.libros = p_libros; }
+    private void setNombre(String p_nombre) {
+        this.nombre = p_nombre;
+    }
+
+    private void setSocios(HashMap<Integer, Socio> p_Socios) {
+        this.socios = p_Socios;
+    }
+
+    private void setLibros(ArrayList<Libro> p_libros) {
+        this.libros = p_libros;
+    }
 
     // ================= Getters
-    public String getNombre() { return this.nombre; }
-    public HashMap<Integer, Socio> getSocios() { return this.socios; }
-    public ArrayList<Libro> getLibros() { return this.libros; }
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public HashMap<Integer, Socio> getSocios() {
+        return this.socios;
+    }
+
+    public ArrayList<Libro> getLibros() {
+        return this.libros;
+    }
 
     // ================= Métodos de gestión
 
     /**
      * Agrega un socio al mapa (clave: DNI)
+     *
      * @param p_socio socio a agregar
      */
     public void agregarSocio(Socio p_socio) {
@@ -66,6 +83,7 @@ public class Biblioteca {
 
     /**
      * Quita un socio del mapa
+     *
      * @param p_socio socio a quitar
      */
     public void quitarSocio(Socio p_socio) {
@@ -99,10 +117,10 @@ public class Biblioteca {
         while (it.hasNext()) {
             Libro libro = it.next();
             if (libro.getTitulo().equals(libroAEliminar.getTitulo()) &&
-                libro.getEdicion() == libroAEliminar.getEdicion() &&
-                libro.getEditorial().equals(libroAEliminar.getEditorial()) &&
-                libro.getAnio() == libroAEliminar.getAnio() &&
-                !libro.prestado()) {
+                    libro.getEdicion() == libroAEliminar.getEdicion() &&
+                    libro.getEditorial().equals(libroAEliminar.getEditorial()) &&
+                    libro.getAnio() == libroAEliminar.getAnio() &&
+                    !libro.prestado()) {
                 it.remove();
                 System.out.println("Libro eliminado correctamente");
                 libroEncontrado = true;
@@ -118,6 +136,7 @@ public class Biblioteca {
 
     /**
      * Verifica si el libro no ha sido prestado y si el socio puede pedir; si es así, realiza el préstamo
+     *
      * @return true si se concretó el préstamo
      */
     public boolean prestarLibro(Calendar p_FechaRetiro, Socio p_Socio, Libro p_libro) {
@@ -150,7 +169,7 @@ public class Biblioteca {
         if (!p_libro.prestado()) {
             // CAMBIO: mensaje alineado a la consigna usual (sin dos puntos tras "El libro")
             throw new LibroNoPrestadoException(
-                "El libro " + p_libro.getTitulo() + " no se puede devolver ya que se encuentra en la biblioteca"
+                    "El libro " + p_libro.getTitulo() + " no se puede devolver ya que se encuentra en la biblioteca"
             );
         } else {
             p_libro.ultimoPrestamo().registrarFechaDevolucion(fechaActual);
@@ -215,20 +234,20 @@ public class Biblioteca {
         Prestamo ultimoPrestamo = p_libro.ultimoPrestamo();
         for (Libro libro : this.getLibros()) {
             if (libro.getTitulo().equalsIgnoreCase(p_libro.getTitulo()) &&
-                libro.getEdicion() == p_libro.getEdicion() &&
-                libro.getEditorial().equalsIgnoreCase(p_libro.getEditorial()) &&
-                libro.getAnio() == p_libro.getAnio()) {
+                    libro.getEdicion() == p_libro.getEdicion() &&
+                    libro.getEditorial().equalsIgnoreCase(p_libro.getEditorial()) &&
+                    libro.getAnio() == p_libro.getAnio()) {
 
                 if (libro.prestado()) {
                     Prestamo ultimoPrestamo1 = p_libro.ultimoPrestamo();
-                    return "El libro está en posesión de: " + ultimoPrestamo1.getSocio().getNombre() 
-                                                            + p_libro.getTitulo();
+                    return "El libro está en posesión de: " + ultimoPrestamo1.getSocio().getNombre()
+                            + p_libro.getTitulo();
                 } else {
                     throw new LibroNoPrestadoException("El libro se encuentra en la biblioteca");
                 }
             }
         }
-        return ultimoPrestamo.getSocio().getNombre() + libro.getTitulo();
+        return ultimoPrestamo.getSocio().getNombre() + p_libro.getTitulo();
     }
 
     /**
@@ -252,13 +271,13 @@ public class Biblioteca {
             String lista = "Lista de Socios: \n";
             for (Map.Entry<Integer, Socio> e : this.getSocios().entrySet()) {
                 Socio s = e.getValue();
-            lista = s.toString() + "\n";
+                lista = s.toString() + "\n";
             }
             lista = lista
-                + "******\n"
-                + "Cant. Socios tipo Estudiante: " + this.cantidadDeSociosPorTipo("Estudiante") + "\n"
-                + "Cant. Socios tipo Docente: " + this.cantidadDeSociosPorTipo("Docente") + "\n"
-                + "******";
+                    + "******\n"
+                    + "Cant. Socios tipo Estudiante: " + this.cantidadDeSociosPorTipo("Estudiante") + "\n"
+                    + "Cant. Socios tipo Docente: " + this.cantidadDeSociosPorTipo("Docente") + "\n"
+                    + "******";
             return lista;
         }
     }
@@ -272,9 +291,9 @@ public class Biblioteca {
         int i = 0;
         for (Libro unLibro : this.getLibros()) {
             lista = lista
-                + (++i) + ") Titulo: " + unLibro.getTitulo()
-                + " || " + "Prestado: (" + (unLibro.prestado() ? "Si" : "No") + ")"
-                + "\n";
+                    + (++i) + ") Titulo: " + unLibro.getTitulo()
+                    + " || " + "Prestado: (" + (unLibro.prestado() ? "Si" : "No") + ")"
+                    + "\n";
         }
         return lista;
     }
@@ -285,7 +304,7 @@ public class Biblioteca {
      */
     public String listaDeTitulos() {
         // Usamos LinkedHashSet para no repetir y conservar orden de aparición
-        Set<String> set = new LinkedHashSet<String>();
+        Set<String> set = new LinkedHashSet<>();
         for (Libro l : this.getLibros()) {
             set.add(l.getTitulo());
         }
@@ -304,9 +323,9 @@ public class Biblioteca {
         String docentes = "";
         for (Docente d : this.docentesResponsables()) {
             docentes = d.toString()
-                + " || "
-                + "Libros Prestados: " + d.cantLibrosPrestados()
-                + "\n";
+                    + " || "
+                    + "Libros Prestados: " + d.cantLibrosPrestados()
+                    + "\n";
         }
         return docentes;
     }
