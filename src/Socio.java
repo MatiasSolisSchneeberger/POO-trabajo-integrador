@@ -137,7 +137,7 @@ public abstract class Socio {
 
     /**
      * Devuelve una representación en cadena (String) del socio
-     * Utiliza el método abstracto {@link #soyDeLaClase()} para identificar el tipo de socio
+     * Utiliza el metodo abstracto {@link #soyDeLaClase()} para identificar el tipo de socio
      *
      * @return Un String con DNI, nombre, tipo de socio y cantidad de libros prestados
      */
@@ -153,7 +153,7 @@ public abstract class Socio {
      * Verifica si el socio está habilitado para pedir un nuevo libro
      * <p>
      * Comprueba la lista de préstamos del socio y, si alguno está vencido
-     * (según el método {@link Prestamo#vencido(Calendar)} comparado con la fecha actual),
+     * (según el metodo {@link Prestamo#vencido(Calendar)} comparado con la fecha actual),
      * el socio no puede pedir más
      *
      * @return {@code true} si el socio no tiene ningún préstamo vencido,
