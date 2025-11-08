@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Estudiante
+comment0.text=\r\n\ Representa\ a\ un\ **Estudiante**\ en\ el\ sistema\ de\ la\ biblioteca.\r\n\ Un\ estudiante\ es\ un\ tipo\ de\ {@link\ Socio}\ con\ restricciones\ y\ privilegios\ espec\u00EDficos\r\n\ relacionados\ con\ la\ cantidad\ y\ el\ tiempo\ de\ pr\u00E9stamo\ de\ libros.\r\n\r\n\ @author\ Escobar\ Lucas\r\n\ @version\ 01/11/2025\r\n
+comment1.params=p_dniSocio\ p_nombre\ p_diasPrestamo\ p_carrera
+comment1.target=Estudiante(int,\ java.lang.String,\ int,\ java.lang.String)
+comment1.text=\r\n\ Constructor\ para\ la\ clase\ Estudiante.\r\n\ @param\ p_dniSocio\ El\ DNI\ o\ n\u00FAmero\ de\ socio\ del\ estudiante.\r\n\ @param\ p_nombre\ El\ nombre\ completo\ del\ estudiante.\r\n\ @param\ p_diasPrestamo\ La\ cantidad\ de\ d\u00EDas\ por\ defecto\ que\ el\ estudiante\ tiene\ para\ un\ pr\u00E9stamo.\r\n\ @param\ p_carrera\ La\ carrera\ que\ est\u00E1\ cursando\ el\ estudiante.\r\n
+comment2.params=p_carrera
+comment2.target=void\ setCarrera(java.lang.String)
+comment2.text=\r\n\ Establece\ la\ carrera\ que\ cursa\ el\ estudiante.\r\n\ @param\ p_carrera\ La\ nueva\ carrera\ a\ asignar.\r\n
+comment3.params=
+comment3.target=java.lang.String\ getCarrera()
+comment3.text=\r\n\ Obtiene\ la\ carrera\ que\ cursa\ el\ estudiante.\r\n\ @return\ La\ carrera\ del\ estudiante.\r\n
+comment4.params=
+comment4.target=boolean\ puedePedir()
+comment4.text=\r\n\ Determina\ si\ el\ estudiante\ est\u00E1\ habilitado\ para\ solicitar\ un\ nuevo\ pr\u00E9stamo.\r\n\ Un\ estudiante\ **no**\ puede\ pedir\ un\ nuevo\ libro\ si\:\r\n\ <ul>\r\n\ <li>Tiene\ m\u00E1s\ de\ **tres**\ libros\ prestados\ actualmente.</li>\r\n\ <li>Tiene\ alg\u00FAn\ libro\ cuyo\ pr\u00E9stamo\ haya\ **vencido**\ (m\u00E1s\ de\ 20\ d\u00EDas\ desde\ la\ fecha\ de\ retiro).</li>\r\n\ </ul>\r\n\ @return\ {@code\ true}\ si\ el\ estudiante\ puede\ pedir\ un\ libro,\ {@code\ false}\ en\ caso\ contrario.\r\n\ @see\ Socio\#cantLibrosPrestados()\r\n\ @see\ Prestamo\#getFechaRetiro()\r\n
+comment5.params=
+comment5.target=java.lang.String\ soyDeLaClase()
+comment5.text=\r\n\ Devuelve\ la\ descripci\u00F3n\ de\ la\ clase\ del\ socio.\r\n\ *@return\ Una\ cadena\ con\ el\ nombre\ de\ la\ clase,\ que\ es\ "Estudiante".\r\n
+numComments=6

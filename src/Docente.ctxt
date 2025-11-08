@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Docente
+comment0.text=\r\n\ Representa\ a\ un\ **Docente**\ en\ el\ sistema\ de\ la\ biblioteca.\r\n\ Un\ docente\ es\ un\ tipo\ de\ {@link\ Socio}\ que\ tiene\ un\ \u00E1rea\ de\ especializaci\u00F3n\r\n\ y\ puede\ modificar\ sus\ d\u00EDas\ de\ pr\u00E9stamo\ bajo\ ciertas\ condiciones.\r\n\r\n\ @author\ Escobar\ Lucas\r\n\ @version\ 01/11/2025\r\n
+comment1.params=p_dniSocio\ p_nombre\ p_area
+comment1.target=Docente(int,\ java.lang.String,\ java.lang.String)
+comment1.text=\r\n\ Constructor\ para\ la\ clase\ Docente.\r\n\ Al\ docente\ se\ le\ asigna\ por\ defecto\ 5\ d\u00EDas\ de\ pr\u00E9stamo.\r\n\ @param\ p_dniSocio\ El\ DNI\ o\ n\u00FAmero\ de\ socio\ del\ docente.\r\n\ @param\ p_nombre\ El\ nombre\ completo\ del\ docente.\r\n\ @param\ p_area\ El\ \u00E1rea\ de\ especializaci\u00F3n\ del\ docente\ (ej.\ "Matem\u00E1ticas",\ "Historia").\r\n
+comment2.params=p_area
+comment2.target=void\ setArea(java.lang.String)
+comment2.text=\r\n\ Establece\ el\ \u00E1rea\ de\ especializaci\u00F3n\ del\ docente.\r\n\ @param\ p_area\ La\ nueva\ \u00E1rea\ a\ asignar.\r\n
+comment3.params=
+comment3.target=java.lang.String\ getArea()
+comment3.text=\r\n\ Obtiene\ el\ \u00E1rea\ de\ especializaci\u00F3n\ del\ docente.\r\n\ @return\ El\ \u00E1rea\ de\ especializaci\u00F3n\ del\ docente.\r\n
+comment4.params=
+comment4.target=boolean\ esResponsable()
+comment4.text=\r\n\ Verifica\ si\ el\ docente\ es\ "responsable"\ en\ sus\ pr\u00E9stamos.\r\n\ Un\ docente\ **no**\ es\ responsable\ si\ tiene\ **alg\u00FAn**\ pr\u00E9stamo\ vencido.\r\n\ Para\ esto,\ se\ utiliza\ el\ m\u00E9todo\ {@code\ vencido(Calendar)}\ de\ la\ clase\ {@link\ Prestamo}.\r\n\ @return\ {@code\ true}\ si\ el\ docente\ no\ tiene\ pr\u00E9stamos\ vencidos,\ {@code\ false}\ en\ caso\ contrario.\r\n\ @see\ Prestamo\#vencido(Calendar)\r\n\ @see\ Socio\#getPrestamos()\r\n
+comment5.params=p_dias
+comment5.target=void\ cambiarDiasDePrestamo(int)
+comment5.text=\r\n\ Permite\ al\ docente\ cambiar\ (agregar\ o\ restar)\ d\u00EDas\ de\ pr\u00E9stamo\ a\ su\ l\u00EDmite\ actual.\r\n\ La\ modificaci\u00F3n\ **solo**\ se\ aplica\ si\ el\ docente\ es\ **responsable**\ (no\ tiene\ pr\u00E9stamos\ vencidos).\r\n\ @param\ p_dias\ La\ cantidad\ de\ d\u00EDas\ a\ agregar\ o\ restar\ al\ l\u00EDmite\ actual\ de\ pr\u00E9stamo.\r\n\ @see\ \#esResponsable()\r\n\ @see\ Socio\#getDiasPrestamo()\r\n
+comment6.params=
+comment6.target=boolean\ puedePedir()
+comment6.text=\r\n\ Determina\ si\ el\ docente\ est\u00E1\ habilitado\ para\ solicitar\ un\ nuevo\ pr\u00E9stamo.\r\n\ Este\ m\u00E9todo\ utiliza\ la\ l\u00F3gica\ de\ la\ clase\ base\ {@link\ Socio\#puedePedir()}.\r\n\ @return\ {@code\ true}\ si\ el\ docente\ puede\ pedir\ un\ libro,\ {@code\ false}\ en\ caso\ contrario.\r\n
+comment7.params=
+comment7.target=java.lang.String\ soyDeLaClase()
+comment7.text=\r\n\ Devuelve\ la\ descripci\u00F3n\ de\ la\ clase\ del\ socio.\r\n\ @return\ Una\ cadena\ con\ el\ nombre\ de\ la\ clase,\ que\ es\ "Docente".\r\n
+numComments=8
