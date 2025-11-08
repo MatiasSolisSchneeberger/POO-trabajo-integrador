@@ -60,11 +60,11 @@ public class Estudiante extends Socio {
      */
     @Override
     public boolean puedePedir() {
-        // verifica límite de cantidad de libros (máximo 3)
+        // verifica limite de cantidad de libros
         if (this.cantLibrosPrestados() >= 3) {
             return false;
         }
-        // verifica vencimientos usando la lógica heredada de Socio
+        // verifica vencimientos 
         return super.puedePedir();
     }
 
