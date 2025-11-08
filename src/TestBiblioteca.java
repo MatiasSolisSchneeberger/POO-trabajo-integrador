@@ -236,7 +236,7 @@ public class TestBiblioteca {
         int anio = leerEntero("Año de publicación del libro a quitar: ");
 
         // Se crea un objeto 'dummy' para usarlo en la búsqueda
-        Libro libroAEliminar = new Libro(titulo, edicion, editorial, anio);
+        Libro libroAEliminar = new Libro(titulo, edicion, editorial, anio, new ArrayList<>()); // no sé si va o no el new ArrayList
         miBiblioteca.quitarLibro(libroAEliminar);
     }
 
@@ -448,10 +448,10 @@ public class TestBiblioteca {
             // Para fines de la prueba, se muestra lo que devuelve (ej: "El libro está en posesión de: [nombre][título]")
             System.out.println("Resultado de la consulta: ");
             System.out.println("  " + resultado);
-            
+
             // Si el libro está prestado, su último préstamo tiene un socio asociado.
             if (libroBuscado.prestado()) {
-                 System.out.println("  Mejor respuesta: " + libroBuscado.ultimoPrestamo().getSocio().getNombre());
+                System.out.println("  Mejor respuesta: " + libroBuscado.ultimoPrestamo().getSocio().getNombre());
             }
 
         } catch (LibroNoPrestadoException e) {
@@ -489,15 +489,15 @@ public class TestBiblioteca {
     private static Libro buscarLibroEnLista(String titulo, int edicion, String editorial, int anio) {
         for (Libro libro : miBiblioteca.getLibros()) {
             if (libro.getTitulo().equalsIgnoreCase(titulo) &&
-                libro.getEdicion() == edicion &&
-                libro.getEditorial().equalsIgnoreCase(editorial) &&
-                libro.getAnio() == anio) {
+                    libro.getEdicion() == edicion &&
+                    libro.getEditorial().equalsIgnoreCase(editorial) &&
+                    libro.getAnio() == anio) {
                 return libro;
             }
         }
         return null;
     }
-    
+
     /**
      * Devuelve la fecha en formato simple (solo día/mes/año).
      */
@@ -505,7 +505,7 @@ public class TestBiblioteca {
         if (p_fecha == null) return "N/A";
         // Nota: Los meses en Calendar van de 0 (Enero) a 11 (Diciembre).
         return p_fecha.get(Calendar.DAY_OF_MONTH) + "/" +
-               (p_fecha.get(Calendar.MONTH) + 1) + "/" +
-               p_fecha.get(Calendar.YEAR);
+                (p_fecha.get(Calendar.MONTH) + 1) + "/" +
+                p_fecha.get(Calendar.YEAR);
     }
 }

@@ -82,7 +82,7 @@ public abstract class Socio {
      *
      * @param p_diasPrestamo El número de días
      */
-    private void setDiasPrestamo(int p_diasPrestamo) {
+    protected void setDiasPrestamo(int p_diasPrestamo) {
         this.diasPrestamo = p_diasPrestamo;
     }
 
@@ -144,9 +144,9 @@ public abstract class Socio {
     @Override
     public String toString() {
         return "D.N.I.: " + this.getDniSocio() +
-                "||" + this.getNombre() +
+                " ||" + this.getNombre() +
                 " (" + this.soyDeLaClase() + ")" +
-                "|| Libros Prestados: " + this.cantLibrosPrestados();
+                " || Libros Prestados: " + this.cantLibrosPrestados();
     }
 
     /**

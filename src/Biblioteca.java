@@ -337,7 +337,7 @@ public class Biblioteca {
      * Añade un nuevo libro a la biblioteca
      */
     public void nuevoLibro(String p_Titulo, int p_Edicion, String p_Editorial, int p_Anio) {
-        this.agregarLibro(new Libro(p_Titulo, p_Edicion, p_Editorial, p_Anio));
+        this.agregarLibro(new Libro(p_Titulo, p_Edicion, p_Editorial, p_Anio, new ArrayList<>())); // no sé si va o no el new ArrayList
     }
 
     /**

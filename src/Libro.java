@@ -1,131 +1,196 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Representa a un libro, con sus datos bibliográficos (título, edición, editorial, año)
+ * y gestiona su historial de préstamos.
+ *
+ * @author ...
+ * @version 1.0
+ */
 public class Libro {
-
-    // ------------------ Atributos ------------------
     private String titulo;
     private int edicion;
     private String editorial;
     private int anio;
     private ArrayList<Prestamo> prestamos;
 
-    // ------------------ Constructor ------------------
-    
-    public Libro(String p_titulo, int p_edicion, String p_editorial, int p_anio) {
+    /**
+     * Constructor para inicializar un objeto Libro con todos sus atributos.
+     *
+     * @param p_titulo Título del libro.
+     * @param p_edicion Número de edición.
+     * @param p_editorial Editorial del libro.
+     * @param p_anio Año de publicación.
+     * @param p_prestamos Lista (posiblemente vacía) de préstamos históricos.
+     */
+    Libro(String p_titulo,
+          int p_edicion,
+          String p_editorial,
+          int p_anio,
+          ArrayList<Prestamo> p_prestamos) {
         this.setTitulo(p_titulo);
         this.setEdicion(p_edicion);
         this.setEditorial(p_editorial);
         this.setAnio(p_anio);
+        this.setPrestamos(p_prestamos);
     }
 
-    // ------------------ Getters ------------------
-
+    /**
+     * Obtiene el título del libro.
+     *
+     * @return El título del libro.
+     */
     public String getTitulo() {
-        return this.titulo;
+        return titulo;
     }
 
+    /**
+     * Establece el título del libro.
+     *
+     * @param titulo El nuevo título.
+     */
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    /**
+     * Obtiene el número de edición del libro.
+     *
+     * @return El número de edición.
+     */
     public int getEdicion() {
-        return this.edicion;
+        return edicion;
     }
 
+    /**
+     * Establece el número de edición del libro.
+     *
+     * @param edicion El nuevo número de edición.
+     */
+    public void setEdicion(int edicion) {
+        this.edicion = edicion;
+    }
+
+    /**
+     * Obtiene la editorial del libro.
+     *
+     * @return La editorial del libro.
+     */
     public String getEditorial() {
-        return this.editorial;
+        return editorial;
     }
 
+    /**
+     * Establece la editorial del libro.
+     *
+     * @param editorial La nueva editorial.
+     */
+    public void setEditorial(String editorial) {
+        this.editorial = editorial;
+    }
+
+    /**
+     * Obtiene el año de publicación del libro.
+     *
+     * @return El año de publicación.
+     */
     public int getAnio() {
-        return this.anio;
+        return anio;
     }
 
+    /**
+     * Establece el año de publicación del libro.
+     *
+     * @param anio El nuevo año de publicación.
+     */
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
+
+    /**
+     * Obtiene la lista de préstamos históricos del libro.
+     *
+     * @return Un ArrayList de objetos Prestamo.
+     */
     public ArrayList<Prestamo> getPrestamos() {
-        return this.prestamos;
+        return prestamos;
     }
-
-    // ------------------ Setters ------------------
-    public void setTitulo(String p_titulo) {
-        this.titulo = p_titulo;
-    }
-
-    public void setEdicion(int p_edicion) {
-        this.edicion = p_edicion;
-    }
-
-    public void setEditorial(String p_editorial) {
-        this.editorial = p_editorial;
-    }
-
-    public void setAnio(int p_anio) {
-        this.anio = p_anio;
-    }
-
-    public void setPrestamos(ArrayList<Prestamo> p_prestamos) {
-        this.prestamos = p_prestamos;
-    }
-    // ------------------ Métodos principales ------------------
 
     /**
-     * Quitar prestamo de la lista de prestamos
+     * Establece la lista de préstamos del libro.
+     *
+     * @param prestamos La nueva lista de préstamos.
      */
-    public void quitarPrestamo(Prestamo p_prestamo) {
-        this.prestamos.remove(p_prestamo);
+    public void setPrestamos(ArrayList<Prestamo> prestamos) {
+        this.prestamos = prestamos;
     }
 
     /**
-     * Devuelve true si el libro está actualmente prestado
-     */
-    public boolean prestado() {
-        if (this.prestamos.isEmpty()) {
-            return false;
-        }
-        Prestamo ultimo = this.ultimoPrestamo();
-        return (ultimo != null && !ultimo.vencido(Calendar.getInstance()) && ultimo.getFechaDevolucion() == null);
-    }
-
-    /**
-     * Devuelve el último préstamo registrado del libro.
-     * Si no tiene préstamos, retorna null.
-     */
-    public Prestamo ultimoPrestamo() {
-        if (this.prestamos.isEmpty()) {
-            return null;
-        }
-        return this.prestamos.get(this.prestamos.size() - 1);
-    }
-
-    /**
-     * Registra un nuevo préstamo del libro si está disponible.
-     * Retorna true si se pudo prestar, false si ya estaba ocupado.
+     * Añade un nuevo préstamo al historial del libro.
+     *
+     * @param p_prestamo El préstamo a agregar.
+     * @return true si el préstamo fue agregado exitosamente.
      */
     public boolean agregarPrestamo(Prestamo p_prestamo) {
-        if (this.estaDisponible()) {
-            this.prestamos.add(p_prestamo);
-            return true;
+        return this.getPrestamos().add(p_prestamo);
+    }
+
+    /**
+     * Elimina un préstamo específico del historial.
+     *
+     * @param p_prestamo El préstamo a eliminar.
+     * @return true si el préstamo fue encontrado y eliminado.
+     */
+    public boolean quitarPrestamo(Prestamo p_prestamo) {
+        return this.getPrestamos().remove(p_prestamo);
+    }
+
+    /**
+     * Devuelve el último préstamo registrado para este libro.
+     * <p>
+     * <b>Advertencia:</b> La lógica original estaba invertida. Esta implementación
+     * asume la lógica corregida: devuelve el último préstamo si la lista no
+     * está vacía, o null en caso contrario.
+     *
+     * @return El último préstamo en la lista, o null si no hay préstamos.
+     */
+    public Prestamo ultimoPrestamo() {
+        return this.getPrestamos().isEmpty() ?
+                null :
+                this.getPrestamos().getLast();
+
+    }
+
+    /**
+     * Verifica si el libro está actualmente prestado.
+     * <p>
+     * Un libro se considera prestado si su último préstamo existe (no es nulo),
+     * no está vencido (según la fecha actual) y aún no ha sido devuelto
+     * (la fecha de devolución es nula).
+     *
+     * @return true si el libro está actualmente prestado, false en caso contrario.
+     */
+    public boolean prestado() {
+        if (this.getPrestamos().isEmpty()) {
+            return false;
+        } else {
+            Prestamo ultimo = this.ultimoPrestamo();
+
+            return (ultimo != null &&
+                    !ultimo.vencido(Calendar.getInstance()) &&
+                    ultimo.getFechaDevolucion() == null);
         }
-        return false;
     }
 
     /**
-     * Marca el libro como devuelto, registrando la fecha en su último préstamo.
+     * Devuelve una representación en cadena de texto del libro,
+     * mostrando su título.
+     *
+     * @return Una cadena con el formato "Titulo [El Título]".
      */
-    public void quitarPrestamo(java.util.Calendar p_fechaDevolucion) {
-        Prestamo ultimo = this.ultimoPrestamo();
-        if (ultimo != null && ultimo.getFechaDevolucion() == null) {
-            ultimo.registrarFechaDevolucion(p_fechaDevolucion);
-        }
-    }
-
-    /**
-     * Retorna true si el libro no está prestado actualmente.
-     */
-    public boolean estaDisponible() {
-        return !this.prestado();
-    }
-
-    /**
-     * Devuelve una descripción del libro.
-     */
+    @Override
     public String toString() {
-        return this.titulo + " (" + this.edicion + "ª edición, " +
-                this.editorial + ", " + this.anio + ")";
+        return "Titulo " + this.getTitulo();
     }
 }
