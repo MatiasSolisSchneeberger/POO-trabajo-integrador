@@ -1,8 +1,8 @@
 #BlueJ class context
-comment0.target=InterfaceBiblioteca
+comment0.target=InterfazBiblioteca
 comment0.text=\r\n\ Interfaz\ gr\u00E1fica\ para\ el\ sistema\ de\ gesti\u00F3n\ de\ biblioteca.\r\n\ Utiliza\ JFrame\ para\ implementar\ un\ men\u00FA\ completo\ de\ gesti\u00F3n.\r\n\r\n\ @author\ Sistema\r\n\ @version\ 08/11/2025\r\n
 comment1.params=
-comment1.target=InterfaceBiblioteca()
+comment1.target=InterfazBiblioteca()
 comment10.params=
 comment10.target=void\ agregarSocioDocente()
 comment11.params=

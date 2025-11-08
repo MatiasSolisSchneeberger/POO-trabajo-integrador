@@ -16,7 +16,7 @@ public class InterfazBiblioteca extends JFrame {
     private final Biblioteca miBiblioteca;
     private JPanel panelPrincipal;
 
-    public InterfaceBiblioteca() {
+    public InterfazBiblioteca() {
         miBiblioteca = new Biblioteca("Biblioteca Central UNL");
         inicializarDatos();
         configurarVentana();
@@ -638,6 +638,6 @@ public class InterfazBiblioteca extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new InterfaceBiblioteca());
+        SwingUtilities.invokeLater(() -> new InterfazBiblioteca());
     }
 }
