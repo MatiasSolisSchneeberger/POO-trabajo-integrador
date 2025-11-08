@@ -1,97 +1,109 @@
 import java.util.Calendar;
+
 /**
  * Representa a un **Docente** en el sistema de la biblioteca.
- * Un docente es un tipo de {@link Socio} que tiene un área de especialización
- * y puede modificar sus días de préstamo bajo ciertas condiciones.
+ * <p>
+ * Un docente es un {@link Socio} con un área de especialización que comienza con 5 días
+ * de préstamo, pero puede recibir días adicionales como premio a su responsabilidad.
  *
  * @author Escobar Lucas
  * @version 01/11/2025
  */
-public class Docente extends Socio{
+public class Docente extends Socio {
     private String area;
-    
+
     /**
-     * Constructor para la clase Docente.
-     * Al docente se le asigna por defecto 5 días de préstamo.
-     * @param p_dniSocio El DNI o número de socio del docente.
-     * @param p_nombre El nombre completo del docente.
-     * @param p_area El área de especialización del docente (ej. "Matemáticas", "Historia").
+     * Constructor para crear un nuevo Docente.
+     * Se asignan automáticamente 5 días de préstamo base.
+     *
+     * @param p_dniSocio El DNI del docente.
+     * @param p_nombre   El nombre completo del docente.
+     * @param p_area     El área de especialización (ej. "Matemáticas", "Historia").
      */
-    public Docente(int p_dniSocio, String p_nombre, String p_area){
-        super(p_dniSocio, p_nombre, 5); // Por defecto: 5 días de préstamo
+    public Docente(int p_dniSocio, String p_nombre, String p_area) {
+        super(p_dniSocio, p_nombre, 5);
         this.setArea(p_area);
     }
-    
+
     /**
-     * Establece el área de especialización del docente.
-     * @param p_area La nueva área a asignar.
+     * Establece el área de especialización.
+     *
+     * @param p_area El nombre del área.
      */
-    private void setArea(String p_area){
+    private void setArea(String p_area) {
         this.area = p_area;
     }
 
     /**
      * Obtiene el área de especialización del docente.
-     * @return El área de especialización del docente.
+     *
+     * @return El área del docente.
      */
-    public String getArea(){
+    public String getArea() {
         return this.area;
     }
-    
+
     /**
-     * Verifica si el docente es "responsable" en sus préstamos.
-     * Un docente **no** es responsable si tiene **algún** préstamo vencido.
-     * Para esto, se utiliza el método {@code vencido(Calendar)} de la clase {@link Prestamo}.
-     * @return {@code true} si el docente no tiene préstamos vencidos, {@code false} en caso contrario.
+     * Verifica el historial de responsabilidad del docente.
+     * <p>
+     * Un docente se considera responsable si <b>nunca</b> ha tenido un préstamo vencido.
+     * Se verifica tanto el historial de libros ya devueltos como los préstamos activos actualmente.
+     *
+     * @return {@code true} si nunca tuvo retrasos, {@code false} si registra al menos un vencimiento.
      * @see Prestamo#vencido(Calendar)
-     * @see Socio#getPrestamos()
      */
-    public boolean esResponsable(){
+    public boolean esResponsable() {
         Calendar hoy = Calendar.getInstance();
 
-        for (Prestamo prestamo : super.getPrestamos()) { // acá no sería this.getPrestamos??
-            // Si el préstamo está vencido, deja de ser responsable
-            if (prestamo.vencido(hoy)) {
-                return false;
+        for (Prestamo prestamo : super.getPrestamos()) {
+            // si el libro ya fue devuelto verificamos si se devolvio tarde
+            if (prestamo.getFechaDevolucion() != null) {
+                if (prestamo.vencido(prestamo.getFechaDevolucion())) {
+                    return false;
+                }
+            }
+            // si el prestamo sigue activo verificamos si está vencido al día de hoy
+            else {
+                if (prestamo.vencido(hoy)) {
+                    return false;
+                }
             }
         }
         return true;
     }
-    
+
     /**
-     * Permite al docente cambiar (agregar o restar) días de préstamo a su límite actual.
-     * La modificación **solo** se aplica si el docente es **responsable** (no tiene préstamos vencidos).
-     * @param p_dias La cantidad de días a agregar o restar al límite actual de préstamo.
+     * Adiciona días al plazo de préstamo del docente, solo si es considerado responsable.
+     *
+     * @param p_dias La cantidad de días a sumar al plazo actual.
      * @see #esResponsable()
-     * @see Socio#getDiasPrestamo()
      */
-    public void cambiarDiasDePrestamo(int p_dias){
+    public void cambiarDiasDePrestamo(int p_dias) {
         if (this.esResponsable()) {
-        int nuevosDias = this.getDiasPrestamo() + p_dias;
-        // ¡USA EL SETTER PARA GUARDAR EL VALOR!
-        this.setDiasPrestamo(nuevosDias);
-        
+            this.setDiasPrestamo(this.getDiasPrestamo() + p_dias);
         } else {
-           System.out.println("No se pueden agregar días: el docente no es responsable.");
+            System.out.println("No se pueden agregar días: el docente no es responsable.");
         }
     }
-    
+
     /**
-     * Determina si el docente está habilitado para solicitar un nuevo préstamo.
-     * Este método utiliza la lógica de la clase base {@link Socio#puedePedir()}.
-     * @return {@code true} si el docente puede pedir un libro, {@code false} en caso contrario.
+     * Verifica si el docente puede pedir un nuevo préstamo.
+     * Actualmente, delega completamente la validación a la clase padre {@link Socio}.
+     *
+     * @return {@code true} si no tiene préstamos vencidos activos.
      */
     @Override
-    public boolean puedePedir(){
+    public boolean puedePedir() {
         return super.puedePedir();
     }
-    
+
     /**
-     * Devuelve la descripción de la clase del socio.
-     * @return Una cadena con el nombre de la clase, que es "Docente".
+     * Devuelve el identificador del tipo de socio.
+     *
+     * @return La cadena literal "Docente".
      */
     @Override
-    public String soyDeLaClase(){
+    public String soyDeLaClase() {
         return "Docente";
     }
 }
