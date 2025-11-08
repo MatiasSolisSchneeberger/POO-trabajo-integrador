@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat; // para dar formato a las fechas
 import java.util.Calendar;
 
 /**
@@ -110,6 +111,7 @@ public class Prestamo {
 
 
     // TODO: Creo que es así
+
     /**
      * Registra la fecha en que el libro fue devuelto.
      * Este metodo actualiza el atributo {@code fechaDevolucion}.
@@ -136,8 +138,26 @@ public class Prestamo {
      */
     @Override
     public String toString() {
+        // Formateo para que sea yyyy/MM/dd
+        /*
+        1. Define el patrón de formato deseado ("Año/Mes/Día")
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+        2. Formatea la fecha de retiro (esta nunca debería ser null)
+        String fechaRetiroStr = sdf.format(this.getFechaRetiro().getTime());
+
+        3. ¡IMPORTANTE! Comprueba si el libro ya fue devuelto
+        Si intentas formatear una fecha "null", el programa fallará
+        String fechaDevolucionStr;
+        if (this.getFechaDevolucion() != null) {
+            fechaDevolucionStr = sdf.format(this.getFechaDevolucion().getTime());
+        } else {
+            fechaDevolucionStr = "(Aún no devuelto)"; // O el texto que prefieras
+        }
+        */
+
         return "Retiro: " + this.getFechaRetiro() + " - Devolución" + this.getFechaDevolucion() + "\n" +
-                "Libro: " + this.getLibro() + "\n" +
+                "Libro: " + this.getLibro().getTitulo() + "\n" +
                 "Socio: " + this.getSocio().getNombre();
     }
 }

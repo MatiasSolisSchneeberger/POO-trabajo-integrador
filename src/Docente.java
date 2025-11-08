@@ -49,7 +49,7 @@ public class Docente extends Socio{
     public boolean esResponsable(){
         Calendar hoy = Calendar.getInstance();
 
-        for (Prestamo prestamo : super.getPrestamos()) {
+        for (Prestamo prestamo : super.getPrestamos()) { // acá no sería this.getPrestamos??
             // Si el préstamo está vencido, deja de ser responsable
             if (prestamo.vencido(hoy)) {
                 return false;

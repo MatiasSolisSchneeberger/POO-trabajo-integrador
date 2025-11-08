@@ -75,6 +75,8 @@ public class Estudiante extends Socio{
         }
         //si no se cumple ninguna de las 2 condiciones Si puede pedir
         return true;
+        // SUGERENCIA: solo llamar a puedePedir de la superClase
+        // return super.puedePedir();
     }
     /**
      * Devuelve la descripción de la clase del socio.

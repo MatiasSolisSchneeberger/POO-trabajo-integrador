@@ -176,7 +176,10 @@ public class Libro {
             return false;
         } else {
             Prestamo ultimo = this.ultimoPrestamo();
-
+            // SUGERENCIA: Creo que es así, porque no importa si está vencido o no
+            // solo importa si se encuentra o no en la biblioteca
+            // Prestamo ultimo = this.ultimoPrestamo();
+            // return (ultimo != null && ultimo.getFechaDevolucion() == null);
             return (ultimo != null &&
                     !ultimo.vencido(Calendar.getInstance()) &&
                     ultimo.getFechaDevolucion() == null);
@@ -191,6 +194,6 @@ public class Libro {
      */
     @Override
     public String toString() {
-        return "Titulo " + this.getTitulo();
+        return "Titulo: " + this.getTitulo();
     }
 }
