@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Ventana
+comment0.text=\r\n\ Clase\ que\ encapsula\ la\ configuraci\u00F3n\ y\ gesti\u00F3n\ de\ una\ ventana\ JFrame.\r\n\ Proporciona\ m\u00E9todos\ para\ configurar\ la\ ventana\ y\ gestionar\ su\ contenido.\r\n\r\n\ @author\ Sistema\r\n\ @version\ 08/11/2025\r\n
+comment1.params=
+comment1.target=Ventana()
+comment1.text=\r\n\ Constructor\ que\ inicializa\ la\ ventana\ con\ configuraci\u00F3n\ b\u00E1sica.\r\n
+comment2.params=titulo\ ancho\ alto
+comment2.target=void\ configurar(java.lang.String,\ int,\ int)
+comment2.text=\r\n\ Configura\ los\ par\u00E1metros\ b\u00E1sicos\ de\ la\ ventana.\r\n\r\n\ @param\ titulo\ T\u00EDtulo\ de\ la\ ventana\r\n\ @param\ ancho\ Ancho\ de\ la\ ventana\ en\ p\u00EDxeles\r\n\ @param\ alto\ Alto\ de\ la\ ventana\ en\ p\u00EDxeles\r\n
+comment3.params=panel
+comment3.target=void\ establecerContenido(javax.swing.JPanel)
+comment3.text=\r\n\ Establece\ el\ contenido\ de\ la\ ventana.\r\n\r\n\ @param\ panel\ Panel\ a\ mostrar\ en\ la\ ventana\r\n
+comment4.params=
+comment4.target=void\ mostrar()
+comment4.text=\r\n\ Muestra\ la\ ventana.\r\n
+comment5.params=texto
+comment5.target=javax.swing.JButton\ crearBoton(java.lang.String)
+comment5.text=\r\n\ Crea\ un\ bot\u00F3n\ con\ estilo\ personalizado.\r\n\r\n\ @param\ texto\ Texto\ del\ bot\u00F3n\r\n\ @return\ Bot\u00F3n\ creado\ con\ estilo\r\n
+numComments=6

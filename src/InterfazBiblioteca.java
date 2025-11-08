@@ -6,29 +6,27 @@ import java.util.GregorianCalendar;
 
 /**
  * Interfaz gráfica para el sistema de gestión de biblioteca.
- * Utiliza JFrame para implementar un menú completo de gestión.
+ * Utiliza la clase Ventana para implementar un menú completo de gestión.
  *
  * @author Sistema
  * @version 08/11/2025
  */
-public class InterfazBiblioteca extends JFrame {
+public class InterfazBiblioteca {
 
     private final Biblioteca miBiblioteca;
+    private Ventana ventana;
     private JPanel panelPrincipal;
 
     public InterfazBiblioteca() {
         miBiblioteca = new Biblioteca("Biblioteca Central UNL");
+        ventana = new Ventana();
         inicializarDatos();
         configurarVentana();
         mostrarMenuPrincipal();
     }
 
     private void configurarVentana() {
-        setTitle("Sistema de Gestión - " + miBiblioteca.getNombre());
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
+        ventana.configurar("Sistema de Gestión - " + miBiblioteca.getNombre(), 600, 400);
     }
 
     private void inicializarDatos() {
@@ -64,30 +62,30 @@ public class InterfazBiblioteca extends JFrame {
 
         gbc.gridwidth = 1;
         gbc.gridy = 1;
-        JButton btnSocios = crearBoton("Gestión de Socios");
+        JButton btnSocios = ventana.crearBoton("Gestión de Socios");
         btnSocios.addActionListener(e -> menuGestionSocios());
         panelPrincipal.add(btnSocios, gbc);
 
         gbc.gridy = 2;
-        JButton btnLibros = crearBoton("Gestión de Libros");
+        JButton btnLibros = ventana.crearBoton("Gestión de Libros");
         btnLibros.addActionListener(e -> menuGestionLibros());
         panelPrincipal.add(btnLibros, gbc);
 
         gbc.gridy = 3;
-        JButton btnPrestamos = crearBoton("Préstamos y Devoluciones");
+        JButton btnPrestamos = ventana.crearBoton("Préstamos y Devoluciones");
         btnPrestamos.addActionListener(e -> menuGestionPrestamos());
         panelPrincipal.add(btnPrestamos, gbc);
 
         gbc.gridy = 4;
-        JButton btnConsultas = crearBoton("Consultas e Informes");
+        JButton btnConsultas = ventana.crearBoton("Consultas e Informes");
         btnConsultas.addActionListener(e -> menuConsultas());
         panelPrincipal.add(btnConsultas, gbc);
 
         gbc.gridy = 5;
-        JButton btnSalir = crearBoton("Salir");
+        JButton btnSalir = ventana.crearBoton("Salir");
         btnSalir.setBackground(new Color(220, 53, 69));
         btnSalir.addActionListener(e -> {
-            int opcion = JOptionPane.showConfirmDialog(this,
+            int opcion = JOptionPane.showConfirmDialog(ventana,
                 "¿Está seguro que desea salir?",
                 "Confirmar Salida",
                 JOptionPane.YES_NO_OPTION);
@@ -97,8 +95,8 @@ public class InterfazBiblioteca extends JFrame {
         });
         panelPrincipal.add(btnSalir, gbc);
 
-        setContentPane(panelPrincipal);
-        setVisible(true);
+        ventana.establecerContenido(panelPrincipal);
+        ventana.mostrar();
     }
 
     private void menuGestionSocios() {
@@ -111,7 +109,7 @@ public class InterfazBiblioteca extends JFrame {
             "Volver"
         };
 
-        int seleccion = JOptionPane.showOptionDialog(this,
+        int seleccion = JOptionPane.showOptionDialog(ventana,
             "Gestión de Socios - Seleccione una opción:",
             "Gestión de Socios",
             JOptionPane.DEFAULT_OPTION,
@@ -138,7 +136,7 @@ public class InterfazBiblioteca extends JFrame {
             "Volver"
         };
 
-        int seleccion = JOptionPane.showOptionDialog(this,
+        int seleccion = JOptionPane.showOptionDialog(ventana,
             "Gestión de Libros - Seleccione una opción:",
             "Gestión de Libros",
             JOptionPane.DEFAULT_OPTION,
@@ -163,7 +161,7 @@ public class InterfazBiblioteca extends JFrame {
             "Volver"
         };
 
-        int seleccion = JOptionPane.showOptionDialog(this,
+        int seleccion = JOptionPane.showOptionDialog(ventana,
             "Préstamos y Devoluciones - Seleccione una opción:",
             "Préstamos y Devoluciones",
             JOptionPane.DEFAULT_OPTION,
@@ -188,7 +186,7 @@ public class InterfazBiblioteca extends JFrame {
             "Volver"
         };
 
-        int seleccion = JOptionPane.showOptionDialog(this,
+        int seleccion = JOptionPane.showOptionDialog(ventana,
             "Consultas e Informes - Seleccione una opción:",
             "Consultas e Informes",
             JOptionPane.DEFAULT_OPTION,
@@ -209,57 +207,57 @@ public class InterfazBiblioteca extends JFrame {
 
     private void agregarSocioEstudiante() {
         try {
-            String dniStr = JOptionPane.showInputDialog(this, "DNI del Estudiante:");
+            String dniStr = JOptionPane.showInputDialog(ventana, "DNI del Estudiante:");
             if (dniStr == null) return;
             int dni = Integer.parseInt(dniStr);
 
-            String nombre = JOptionPane.showInputDialog(this, "Nombre del Estudiante:");
+            String nombre = JOptionPane.showInputDialog(ventana, "Nombre del Estudiante:");
             if (nombre == null) return;
 
-            String carrera = JOptionPane.showInputDialog(this, "Carrera:");
+            String carrera = JOptionPane.showInputDialog(ventana, "Carrera:");
             if (carrera == null) return;
 
             miBiblioteca.nuevoSocioEstudiante(dni, nombre, carrera);
-            JOptionPane.showMessageDialog(this, "Estudiante agregado exitosamente");
+            JOptionPane.showMessageDialog(ventana, "Estudiante agregado exitosamente");
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void agregarSocioDocente() {
         try {
-            String dniStr = JOptionPane.showInputDialog(this, "DNI del Docente:");
+            String dniStr = JOptionPane.showInputDialog(ventana, "DNI del Docente:");
             if (dniStr == null) return;
             int dni = Integer.parseInt(dniStr);
 
-            String nombre = JOptionPane.showInputDialog(this, "Nombre del Docente:");
+            String nombre = JOptionPane.showInputDialog(ventana, "Nombre del Docente:");
             if (nombre == null) return;
 
-            String area = JOptionPane.showInputDialog(this, "Área de Especialización:");
+            String area = JOptionPane.showInputDialog(ventana, "Área de Especialización:");
             if (area == null) return;
 
             miBiblioteca.nuevoSocioDocente(dni, nombre, area);
-            JOptionPane.showMessageDialog(this, "Docente agregado exitosamente");
+            JOptionPane.showMessageDialog(ventana, "Docente agregado exitosamente");
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void quitarSocio() {
         try {
-            String dniStr = JOptionPane.showInputDialog(this, "DNI del socio a quitar:");
+            String dniStr = JOptionPane.showInputDialog(ventana, "DNI del socio a quitar:");
             if (dniStr == null) return;
             int dni = Integer.parseInt(dniStr);
 
             Socio socio = miBiblioteca.buscarSocio(dni);
             if (socio != null) {
                 miBiblioteca.quitarSocio(socio);
-                JOptionPane.showMessageDialog(this, "Socio eliminado exitosamente");
+                JOptionPane.showMessageDialog(ventana, "Socio eliminado exitosamente");
             } else {
-                JOptionPane.showMessageDialog(this, "Socio no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(ventana, "Socio no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -269,12 +267,12 @@ public class InterfazBiblioteca extends JFrame {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(500, 300));
-        JOptionPane.showMessageDialog(this, scrollPane, "Lista de Socios", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(ventana, scrollPane, "Lista de Socios", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void cambiarDiasDocente() {
         try {
-            String dniStr = JOptionPane.showInputDialog(this, "DNI del Docente a modificar:");
+            String dniStr = JOptionPane.showInputDialog(ventana, "DNI del Docente a modificar:");
             if (dniStr == null) return;
             int dni = Integer.parseInt(dniStr);
 
@@ -282,28 +280,28 @@ public class InterfazBiblioteca extends JFrame {
 
             if (socio instanceof Docente docente) {
                 if (docente.esResponsable()) {
-                    String diasStr = JOptionPane.showInputDialog(this, "Días a sumar/restar (ej: 3, -2):");
+                    String diasStr = JOptionPane.showInputDialog(ventana, "Días a sumar/restar (ej: 3, -2):");
                     if (diasStr == null) return;
                     int dias = Integer.parseInt(diasStr);
 
                     docente.cambiarDiasDePrestamo(dias);
-                    JOptionPane.showMessageDialog(this,
+                    JOptionPane.showMessageDialog(ventana,
                         "Días de préstamo cambiados.\nNuevo límite: " + docente.getDiasPrestamo() + " días");
                 } else {
-                    JOptionPane.showMessageDialog(this,
+                    JOptionPane.showMessageDialog(ventana,
                         "El docente no es responsable. No se puede cambiar el límite de días.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else if (socio != null) {
-                JOptionPane.showMessageDialog(this,
+                JOptionPane.showMessageDialog(ventana,
                     "El socio con DNI " + dni + " no es Docente.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this,
+                JOptionPane.showMessageDialog(ventana,
                     "Socio no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -311,48 +309,48 @@ public class InterfazBiblioteca extends JFrame {
 
     private void agregarLibro() {
         try {
-            String titulo = JOptionPane.showInputDialog(this, "Título:");
+            String titulo = JOptionPane.showInputDialog(ventana, "Título:");
             if (titulo == null) return;
 
-            String edicionStr = JOptionPane.showInputDialog(this, "Edición:");
+            String edicionStr = JOptionPane.showInputDialog(ventana, "Edición:");
             if (edicionStr == null) return;
             int edicion = Integer.parseInt(edicionStr);
 
-            String editorial = JOptionPane.showInputDialog(this, "Editorial:");
+            String editorial = JOptionPane.showInputDialog(ventana, "Editorial:");
             if (editorial == null) return;
 
-            String anioStr = JOptionPane.showInputDialog(this, "Año de publicación:");
+            String anioStr = JOptionPane.showInputDialog(ventana, "Año de publicación:");
             if (anioStr == null) return;
             int anio = Integer.parseInt(anioStr);
 
             miBiblioteca.nuevoLibro(titulo, edicion, editorial, anio);
-            JOptionPane.showMessageDialog(this, "Libro agregado exitosamente");
+            JOptionPane.showMessageDialog(ventana, "Libro agregado exitosamente");
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void quitarLibro() {
         try {
-            String titulo = JOptionPane.showInputDialog(this, "Título del libro a quitar:");
+            String titulo = JOptionPane.showInputDialog(ventana, "Título del libro a quitar:");
             if (titulo == null) return;
 
-            String edicionStr = JOptionPane.showInputDialog(this, "Edición del libro a quitar:");
+            String edicionStr = JOptionPane.showInputDialog(ventana, "Edición del libro a quitar:");
             if (edicionStr == null) return;
             int edicion = Integer.parseInt(edicionStr);
 
-            String editorial = JOptionPane.showInputDialog(this, "Editorial del libro a quitar:");
+            String editorial = JOptionPane.showInputDialog(ventana, "Editorial del libro a quitar:");
             if (editorial == null) return;
 
-            String anioStr = JOptionPane.showInputDialog(this, "Año de publicación del libro a quitar:");
+            String anioStr = JOptionPane.showInputDialog(ventana, "Año de publicación del libro a quitar:");
             if (anioStr == null) return;
             int anio = Integer.parseInt(anioStr);
 
             Libro libroAEliminar = new Libro(titulo, edicion, editorial, anio, new ArrayList<>());
             miBiblioteca.quitarLibro(libroAEliminar);
-            JOptionPane.showMessageDialog(this, "Libro eliminado exitosamente");
+            JOptionPane.showMessageDialog(ventana, "Libro eliminado exitosamente");
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -362,7 +360,7 @@ public class InterfazBiblioteca extends JFrame {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(500, 300));
-        JOptionPane.showMessageDialog(this, scrollPane, "Lista de Libros", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(ventana, scrollPane, "Lista de Libros", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void listarTitulos() {
@@ -371,28 +369,28 @@ public class InterfazBiblioteca extends JFrame {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(500, 300));
-        JOptionPane.showMessageDialog(this, scrollPane, "Lista de Títulos Únicos", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(ventana, scrollPane, "Lista de Títulos Únicos", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Métodos de Gestión de Préstamos
 
     private void realizarPrestamo() {
         try {
-            String dniStr = JOptionPane.showInputDialog(this, "DNI del Socio:");
+            String dniStr = JOptionPane.showInputDialog(ventana, "DNI del Socio:");
             if (dniStr == null) return;
             int dni = Integer.parseInt(dniStr);
 
-            String titulo = JOptionPane.showInputDialog(this, "Título del Libro a prestar:");
+            String titulo = JOptionPane.showInputDialog(ventana, "Título del Libro a prestar:");
             if (titulo == null) return;
 
-            String edicionStr = JOptionPane.showInputDialog(this, "Edición del Libro:");
+            String edicionStr = JOptionPane.showInputDialog(ventana, "Edición del Libro:");
             if (edicionStr == null) return;
             int edicion = Integer.parseInt(edicionStr);
 
-            String editorial = JOptionPane.showInputDialog(this, "Editorial del Libro:");
+            String editorial = JOptionPane.showInputDialog(ventana, "Editorial del Libro:");
             if (editorial == null) return;
 
-            String anioStr = JOptionPane.showInputDialog(this, "Año del Libro:");
+            String anioStr = JOptionPane.showInputDialog(ventana, "Año del Libro:");
             if (anioStr == null) return;
             int anio = Integer.parseInt(anioStr);
 
@@ -400,12 +398,12 @@ public class InterfazBiblioteca extends JFrame {
             Libro libroAPrestar = buscarLibroEnLista(titulo, edicion, editorial, anio);
 
             if (socio == null) {
-                JOptionPane.showMessageDialog(this, "Socio con DNI " + dni + " no encontrado.",
+                JOptionPane.showMessageDialog(ventana, "Socio con DNI " + dni + " no encontrado.",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (libroAPrestar == null) {
-                JOptionPane.showMessageDialog(this, "Libro no encontrado en la biblioteca.",
+                JOptionPane.showMessageDialog(ventana, "Libro no encontrado en la biblioteca.",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -413,7 +411,7 @@ public class InterfazBiblioteca extends JFrame {
             Calendar fechaRetiro = new GregorianCalendar();
 
             if (miBiblioteca.prestarLibro(fechaRetiro, socio, libroAPrestar)) {
-                JOptionPane.showMessageDialog(this,
+                JOptionPane.showMessageDialog(ventana,
                     "Préstamo realizado con éxito.\n" +
                     "Socio: " + socio.getNombre() + "\n" +
                     "Libro: " + libroAPrestar.getTitulo() + "\n" +
@@ -426,60 +424,60 @@ public class InterfazBiblioteca extends JFrame {
                 if (libroAPrestar.prestado()) {
                     mensaje += "Razón: El libro ya está prestado.";
                 }
-                JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(ventana, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void devolverLibro() {
         try {
-            String titulo = JOptionPane.showInputDialog(this, "Título del Libro a devolver:");
+            String titulo = JOptionPane.showInputDialog(ventana, "Título del Libro a devolver:");
             if (titulo == null) return;
 
-            String edicionStr = JOptionPane.showInputDialog(this, "Edición del Libro:");
+            String edicionStr = JOptionPane.showInputDialog(ventana, "Edición del Libro:");
             if (edicionStr == null) return;
             int edicion = Integer.parseInt(edicionStr);
 
-            String editorial = JOptionPane.showInputDialog(this, "Editorial del Libro:");
+            String editorial = JOptionPane.showInputDialog(ventana, "Editorial del Libro:");
             if (editorial == null) return;
 
-            String anioStr = JOptionPane.showInputDialog(this, "Año del Libro:");
+            String anioStr = JOptionPane.showInputDialog(ventana, "Año del Libro:");
             if (anioStr == null) return;
             int anio = Integer.parseInt(anioStr);
 
             Libro libroADevolver = buscarLibroEnLista(titulo, edicion, editorial, anio);
 
             if (libroADevolver == null) {
-                JOptionPane.showMessageDialog(this, "Libro no encontrado en la biblioteca.",
+                JOptionPane.showMessageDialog(ventana, "Libro no encontrado en la biblioteca.",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             try {
                 miBiblioteca.devolverLibro(libroADevolver);
-                JOptionPane.showMessageDialog(this,
+                JOptionPane.showMessageDialog(ventana,
                     "Devolución de \"" + libroADevolver.getTitulo() + "\" registrada con éxito.");
             } catch (LibroNoPrestadoException e) {
-                JOptionPane.showMessageDialog(this, "Error en la devolución: " + e.getMessage(),
+                JOptionPane.showMessageDialog(ventana, "Error en la devolución: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void verificarHabilitacionSocio() {
         try {
-            String dniStr = JOptionPane.showInputDialog(this, "DNI del Socio a verificar:");
+            String dniStr = JOptionPane.showInputDialog(ventana, "DNI del Socio a verificar:");
             if (dniStr == null) return;
             int dni = Integer.parseInt(dniStr);
 
             Socio socio = miBiblioteca.buscarSocio(dni);
 
             if (socio == null) {
-                JOptionPane.showMessageDialog(this, "Socio no encontrado.",
+                JOptionPane.showMessageDialog(ventana, "Socio no encontrado.",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -504,10 +502,10 @@ public class InterfazBiblioteca extends JFrame {
             }
             mensaje += "\nLibros prestados actualmente: " + socio.cantLibrosPrestados();
 
-            JOptionPane.showMessageDialog(this, mensaje, "Habilitación de Socio",
+            JOptionPane.showMessageDialog(ventana, mensaje, "Habilitación de Socio",
                 JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "DNI inválido", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -517,7 +515,7 @@ public class InterfazBiblioteca extends JFrame {
         ArrayList<Prestamo> vencidos = miBiblioteca.prestamosVencidos();
 
         if (vencidos.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "¡No hay préstamos vencidos!",
+            JOptionPane.showMessageDialog(ventana, "¡No hay préstamos vencidos!",
                 "Préstamos Vencidos", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -535,7 +533,7 @@ public class InterfazBiblioteca extends JFrame {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(500, 300));
-        JOptionPane.showMessageDialog(this, scrollPane, "Préstamos Vencidos",
+        JOptionPane.showMessageDialog(ventana, scrollPane, "Préstamos Vencidos",
             JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -545,7 +543,7 @@ public class InterfazBiblioteca extends JFrame {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(500, 300));
-        JOptionPane.showMessageDialog(this, scrollPane, "Docentes Responsables",
+        JOptionPane.showMessageDialog(ventana, scrollPane, "Docentes Responsables",
             JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -557,30 +555,30 @@ public class InterfazBiblioteca extends JFrame {
                         "Estudiantes: " + estudiantes + "\n" +
                         "Docentes: " + docentes;
 
-        JOptionPane.showMessageDialog(this, mensaje, "Cantidad de Socios por Tipo",
+        JOptionPane.showMessageDialog(ventana, mensaje, "Cantidad de Socios por Tipo",
             JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void quienTieneLibro() {
         try {
-            String titulo = JOptionPane.showInputDialog(this, "Título del Libro a consultar:");
+            String titulo = JOptionPane.showInputDialog(ventana, "Título del Libro a consultar:");
             if (titulo == null) return;
 
-            String edicionStr = JOptionPane.showInputDialog(this, "Edición del Libro:");
+            String edicionStr = JOptionPane.showInputDialog(ventana, "Edición del Libro:");
             if (edicionStr == null) return;
             int edicion = Integer.parseInt(edicionStr);
 
-            String editorial = JOptionPane.showInputDialog(this, "Editorial del Libro:");
+            String editorial = JOptionPane.showInputDialog(ventana, "Editorial del Libro:");
             if (editorial == null) return;
 
-            String anioStr = JOptionPane.showInputDialog(this, "Año del Libro:");
+            String anioStr = JOptionPane.showInputDialog(ventana, "Año del Libro:");
             if (anioStr == null) return;
             int anio = Integer.parseInt(anioStr);
 
             Libro libroBuscado = buscarLibroEnLista(titulo, edicion, editorial, anio);
 
             if (libroBuscado == null) {
-                JOptionPane.showMessageDialog(this, "Libro no encontrado en la biblioteca.",
+                JOptionPane.showMessageDialog(ventana, "Libro no encontrado en la biblioteca.",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -594,29 +592,18 @@ public class InterfazBiblioteca extends JFrame {
                              libroBuscado.ultimoPrestamo().getSocio().getNombre();
                 }
 
-                JOptionPane.showMessageDialog(this, mensaje, "¿Quién tiene el libro?",
+                JOptionPane.showMessageDialog(ventana, mensaje, "¿Quién tiene el libro?",
                     JOptionPane.INFORMATION_MESSAGE);
             } catch (LibroNoPrestadoException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Información",
+                JOptionPane.showMessageDialog(ventana, e.getMessage(), "Información",
                     JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ventana, "Entrada inválida", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     // Métodos auxiliares
-
-    private JButton crearBoton(String texto) {
-        JButton boton = new JButton(texto);
-        boton.setPreferredSize(new Dimension(250, 40));
-        boton.setFont(new Font("Arial", Font.PLAIN, 14));
-        boton.setFocusPainted(false);
-        boton.setBackground(new Color(0, 123, 255));
-        boton.setForeground(Color.WHITE);
-        boton.setBorder(BorderFactory.createLineBorder(new Color(0, 86, 179), 2));
-        return boton;
-    }
 
     private Libro buscarLibroEnLista(String titulo, int edicion, String editorial, int anio) {
         for (Libro libro : miBiblioteca.getLibros()) {
