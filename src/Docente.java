@@ -56,13 +56,13 @@ public class Docente extends Socio {
         Calendar hoy = Calendar.getInstance();
 
         for (Prestamo prestamo : super.getPrestamos()) {
-            // Caso 1: El libro ya fue devuelto. Verificamos si se devolvió tarde.
+            // si el libro ya fue devuelto verificamos si se devolvio tarde
             if (prestamo.getFechaDevolucion() != null) {
                 if (prestamo.vencido(prestamo.getFechaDevolucion())) {
                     return false;
                 }
             }
-            // Caso 2: El préstamo sigue activo. Verificamos si está vencido al día de hoy.
+            // si el prestamo sigue activo verificamos si está vencido al día de hoy
             else {
                 if (prestamo.vencido(hoy)) {
                     return false;
