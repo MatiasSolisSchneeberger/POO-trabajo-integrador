@@ -344,7 +344,7 @@ public class Biblioteca implements java.io.Serializable{
      */
     public void nuevoSocioEstudiante(int p_DniSocio, String p_Nombre, String p_Carrera) {
         // CAMBIO: por consigna, estudiantes suelen tener 20 días; ajustá si tu ctor no lo pide
-        this.agregarSocio(new Estudiante(p_DniSocio, p_Nombre, 20, p_Carrera));
+        this.agregarSocio(new Estudiante(p_DniSocio, p_Nombre, p_Carrera));
     }
 
     /**
