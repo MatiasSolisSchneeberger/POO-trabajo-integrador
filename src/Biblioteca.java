@@ -319,9 +319,14 @@ public class Biblioteca implements java.io.Serializable{
      * Devuelve un listado de docentes responsables
      */
     public String listaDeDocentesResponsables() {
+        String docentes = "";
         for (Docente d : this.docentesResponsables()) {
-             return d.toString();
+            docentes = d.toString()
+                + " || "
+                + "Libros Prestados: " + d.cantLibrosPrestados()
+                + "\n";
         }
+        return docentes;
     }
 
 
