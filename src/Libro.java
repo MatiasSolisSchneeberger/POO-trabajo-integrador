@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.io.Serializable;
 
 /**
  * Representa a un libro, con sus datos bibliográficos (título, edición, editorial, año)
@@ -8,7 +9,7 @@ import java.util.Calendar;
  * @author ...
  * @version 1.0
  */
-public class Libro {
+public class Libro implements java.io.Serializable{
     private String titulo;
     private int edicion;
     private String editorial;
@@ -176,10 +177,7 @@ public class Libro {
             return false;
         } else {
             Prestamo ultimo = this.ultimoPrestamo();
-            // SUGERENCIA: Creo que es así, porque no importa si está vencido o no
-            // solo importa si se encuentra o no en la biblioteca
-            // Prestamo ultimo = this.ultimoPrestamo();
-            // return (ultimo != null && ultimo.getFechaDevolucion() == null);
+
             return (ultimo != null &&
                     !ultimo.vencido(Calendar.getInstance()) &&
                     ultimo.getFechaDevolucion() == null);
@@ -194,6 +192,6 @@ public class Libro {
      */
     @Override
     public String toString() {
-        return "Titulo: " + this.getTitulo();
+        return "Titulo " + this.getTitulo();
     }
 }
