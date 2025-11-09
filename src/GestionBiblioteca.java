@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class Main {
+public class GestionBiblioteca {
     //private static final Biblioteca miBiblioteca = new Biblioteca("Biblioteca Central UNL");
     private static final Biblioteca miBiblioteca = GestorPersistencia.cargar();
 
