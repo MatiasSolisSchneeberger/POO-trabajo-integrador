@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.io.Serializable;
 
 /**
  * Clase abstracta que representa a un socio de la biblioteca
  * Define el comportamiento y los atributos básicos comunes a todos los tipos de socios, como DNI, nombre y la lista de préstamos que tiene actualmente
- *
  * @author Matias Solis Schneeberger
  * @version 1.0.0
  */
-public abstract class Socio {
+public abstract class Socio implements java.io.Serializable{
     private int dniSocio;
     private String nombre;
     private int diasPrestamo;
@@ -133,15 +133,7 @@ public abstract class Socio {
      * @return El número de préstamos en la lista
      */
     public int cantLibrosPrestados() {
-        int total = 0;
-
-        for (Prestamo prestamo : this.getPrestamos()) {
-            if (prestamo.getFechaDevolucion() == null) {
-                total++;
-            }
-        }
-
-        return total;
+        return this.getPrestamos().size();
     }
 
     /**
@@ -172,12 +164,10 @@ public abstract class Socio {
         Calendar hoy = Calendar.getInstance();
 
         for (Prestamo prestamo : this.getPrestamos()) {
-            if (prestamo.getFechaDevolucion() == null &&
-                    prestamo.vencido(hoy)) {
+            if (prestamo.vencido(hoy)) {
                 return false;
             }
         }
-
         return true;
     }
 
