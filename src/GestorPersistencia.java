@@ -1,6 +1,12 @@
 import java.io.*;
 
 /**
+ * Sistema de permanencia de datos de la biblioteca.
+ *
+ * @author Fernandez Gabriel Elías
+ * @version 07/11/2025
+ */
+/**
  * Clase utilitaria para manejar la serialización de la clase Biblioteca completa.
  */
 public class GestorPersistencia {
