@@ -3,7 +3,7 @@ import java.io.*;
 /**
  * Sistema de permanencia de datos de la biblioteca.
  *
- * @author Fernandez Gabriel Elías
+ * @author Fernandez, Gabriel Elías - Escobar, Lucas Joel.
  * @version 07/11/2025
  */
 /**
