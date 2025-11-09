@@ -194,20 +194,20 @@ public class VentanaMain extends JFrame {
         setTitle("Gestion de Biblioteca | " + p_biblioteca.getNombre());
         //setDefaultCloseOperation(EXIT_ON_CLOSE); estoy forzado a implementar otra función más debajo para la implementación de la persistencia de datos
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); //cambio necesario para que se pueda interceptar el cierre de la aplicación
-        addWindowListener(new java.awt.event.WindowAdapter(){
-        /**
-         * Este método es llamado cuando el usuario intenta cerrar la ventana.
-         * Su tipo de retorno es **void**, por eso no te pedirá un 'return'.
-         */
-        @Override
-        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-            // A. Guardamos el estado actual de la Biblioteca
-            GestorPersistencia.guardar(miBiblioteca);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            /**
+             * Este método es llamado cuando el usuario intenta cerrar la ventana.
+             * Su tipo de retorno es **void**, por eso no te pedirá un 'return'.
+             */
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // A. Guardamos el estado actual de la Biblioteca
+                GestorPersistencia.guardar(miBiblioteca);
 
-            // B. Terminamos la aplicación de manera segura
-            System.exit(0);
-        }
-    });
+                // B. Terminamos la aplicación de manera segura
+                System.exit(0);
+            }
+        });
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1280, 720));
@@ -217,36 +217,36 @@ public class VentanaMain extends JFrame {
             gestionDeBibliotecaLabel.setText("Gestion De Biblioteca | " + miBiblioteca.getNombre());
         }
 
-        // --- A. Botones de Navegación Principal ---
+        // ------ Botones para Navegar entre secciones ------
         gestionDeSociosButton.addActionListener(e -> mostrarPanel(PANEL_SOCIOS));
         gestionDeLibrosButton.addActionListener(e -> mostrarPanel(PANEL_LIBROS));
         prestamosYDevolucionesButton.addActionListener(e -> mostrarPanel(PANEL_PRESTAMOS));
         consultasEInformesButton.addActionListener(e -> mostrarPanel(PANEL_CONSULTAS));
-        //salirButton.addActionListener(e -> System.exit(0));
-        
-        //salirButton con lógica necesaria para el funcionamiento de la persistencia de Archivos.
         salirButton.addActionListener(e -> {
-        GestorPersistencia.guardar(miBiblioteca); // Guarda antes de salir
-        System.exit(0);                          // Cierra la aplicación
+            GestorPersistencia.guardar(miBiblioteca); // Guarda antes de salir
+            System.exit(0);                     // Cierra la aplicación
         });
 
-        // --- B. Botones de "Volver" ---
+        // ------ Botones para volver ------
+
         volverSociosButton.addActionListener(e -> mostrarPanel(PANEL_PRINCIPAL));
         volverLibrosButton.addActionListener(e -> mostrarPanel(PANEL_PRINCIPAL));
         volverPresDevoButton.addActionListener(e -> mostrarPanel(PANEL_PRINCIPAL));
         volverConsInfoButton.addActionListener(e -> mostrarPanel(PANEL_PRINCIPAL));
 
-        // --- C. Botones de Funcionalidad ---
+        // ------ Funcionalidad ------
 
         // --- Panel Socios ---
         agregarEstudiandteButton.addActionListener(e -> {
             VentAgreEstu dialogo = new VentAgreEstu(this, miBiblioteca);
             dialogo.setVisible(true);
         });
+
         agregarDocenteButton.addActionListener(e -> {
             VentAgreDoce dialogo = new VentAgreDoce(this, miBiblioteca);
             dialogo.setVisible(true);
         });
+
         listarSociosButton.addActionListener(e -> {
             String listadoDeSocios = miBiblioteca.listaDeSocios();
             VentListSoci dialogo = new VentListSoci(
@@ -256,12 +256,16 @@ public class VentanaMain extends JFrame {
             );
             dialogo.setVisible(true);
         });
+
         quitarSocioButton.addActionListener(e -> {
             VentQuitarSocio dialogo = new VentQuitarSocio(this, miBiblioteca);
             dialogo.setVisible(true);
         });
-        cambiarDiasDePrestamoButton.addActionListener(e -> mostrarPlaceholder("Cambiar Días Préstamo Docente"));
 
+        cambiarDiasDePrestamoButton.addActionListener(e -> {
+            VentCambiarDias dialogo = new VentCambiarDias(this, miBiblioteca);
+            dialogo.setVisible(true);
+        });
 
         // ---- Panel Libros ----
         agregarLibroButton.addActionListener(e -> {
@@ -270,9 +274,7 @@ public class VentanaMain extends JFrame {
         });
 
         quitarLibroButton.addActionListener(e -> {
-            // 1. Creamos la nueva ventana de diálogo para Quitar Libro
             VentQuitarLibro dialogo = new VentQuitarLibro(this, miBiblioteca);
-            // 2. La hacemos visible (y modal)
             dialogo.setVisible(true);
         });
 
@@ -303,6 +305,7 @@ public class VentanaMain extends JFrame {
                 dialogo.setVisible(true);
             }
         });
+
         // muy corto para hacerlo en un archivo aparte
         listarTitulosButton.addActionListener(e -> {
             // 1. Obtenemos el String formateado de la lógica de negocio
