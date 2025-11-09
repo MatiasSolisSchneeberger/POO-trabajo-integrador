@@ -5,7 +5,7 @@ import java.io.*;
  */
 public class GestorPersistencia {
 
-    private static final String NOMBRE_ARCHIVO = "biblioteca_central_UNL.dat";
+    private static final String NOMBRE_ARCHIVO = "datos_biblioteca.dat";
     private static final String NOMBRE_BIBLIOTECA = "Biblioteca Central UNL";
 
     /**
