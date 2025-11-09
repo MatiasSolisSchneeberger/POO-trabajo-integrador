@@ -1,0 +1,225 @@
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+
+/**
+ * GestorBD: Maneja toda la comunicación con la base de datos SQLite.
+ */
+public class GestorBD {
+    private static final String URL = "jdbc:sqlite:biblioteca.db";
+
+    // --- CONEXIÓN ---
+    public static Connection conectar() throws SQLException {
+        return DriverManager.getConnection(URL);
+    }
+
+    // --- INICIALIZACIÓN ---
+    public static void inicializarTablas() {
+        // Usamos try-with-resources para cerrar automáticamente la conexión y el statement
+        try (Connection conn = conectar(); Statement stmt = conn.createStatement()) {
+            // Tabla Libros: Clave compuesta para evitar duplicados exactos
+            stmt.execute("CREATE TABLE IF NOT EXISTS libros (" +
+                         "titulo TEXT, edicion INTEGER, editorial TEXT, anio INTEGER, " +
+                         "PRIMARY KEY (titulo, edicion, editorial, anio))");
+
+            // Tabla Socios: DNI como clave primaria
+            stmt.execute("CREATE TABLE IF NOT EXISTS socios (" +
+                         "dni INTEGER PRIMARY KEY, nombre TEXT, tipo TEXT, " +
+                         "dias_prestamo INTEGER, extra TEXT)");
+
+            // Tabla Préstamos: Registra quién tiene qué y desde cuándo
+            // Usamos INTEGER para guardar fechas como milisegundos (long)
+            stmt.execute("CREATE TABLE IF NOT EXISTS prestamos (" +
+                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                         "dni_socio INTEGER, " +
+                         "titulo_libro TEXT, edicion_libro INTEGER, editorial_libro TEXT, anio_libro INTEGER, " +
+                         "fecha_retiro INTEGER, " +
+                         "fecha_devolucion INTEGER)");
+
+            // System.out.println("--- Base de datos verificada ---");
+        } catch (SQLException e) {
+            System.err.println("Error crítico al inicializar BD: " + e.getMessage());
+        }
+    }
+
+    // ================= MÉTODOS PARA LIBROS =================
+
+    public static void guardarLibro(Libro l) {
+        String sql = "INSERT OR IGNORE INTO libros(titulo, edicion, editorial, anio) VALUES(?,?,?,?)";
+        try (Connection conn = conectar(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, l.getTitulo());
+            pstmt.setInt(2, l.getEdicion());
+            pstmt.setString(3, l.getEditorial());
+            pstmt.setInt(4, l.getAnio());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error guardando libro: " + e.getMessage());
+        }
+    }
+
+    public static void eliminarLibro(Libro l) {
+        String sql = "DELETE FROM libros WHERE titulo = ? AND edicion = ? AND editorial = ? AND anio = ?";
+        try (Connection conn = conectar(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, l.getTitulo());
+            pstmt.setInt(2, l.getEdicion());
+            pstmt.setString(3, l.getEditorial());
+            pstmt.setInt(4, l.getAnio());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error eliminando libro: " + e.getMessage());
+        }
+    }
+
+    public static ArrayList<Libro> cargarLibros() {
+        ArrayList<Libro> lista = new ArrayList<>();
+        String sql = "SELECT * FROM libros";
+        try (Connection conn = conectar(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                lista.add(new Libro(
+                    rs.getString("titulo"), rs.getInt("edicion"),
+                    rs.getString("editorial"), rs.getInt("anio"),
+                    new ArrayList<>() // Se inicia sin préstamos, se cargarán luego
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error cargando libros: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // ================= MÉTODOS PARA SOCIOS =================
+
+    public static void guardarSocio(Socio s) {
+        String sql = "INSERT OR REPLACE INTO socios(dni, nombre, tipo, dias_prestamo, extra) VALUES(?,?,?,?,?)";
+        try (Connection conn = conectar(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, s.getDniSocio());
+            pstmt.setString(2, s.getNombre());
+            pstmt.setInt(4, s.getDiasPrestamo());
+
+            if (s instanceof Docente) {
+                pstmt.setString(3, "DOC");
+                pstmt.setString(5, ((Docente) s).getArea());
+            } else if (s instanceof Estudiante) {
+                pstmt.setString(3, "EST");
+                // Asumimos que Estudiante tiene un getter para carrera. Si no, ajusta esto.
+                 pstmt.setString(5, ((Estudiante) s).getCarrera());
+            }
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error guardando socio: " + e.getMessage());
+        }
+    }
+
+    public static void eliminarSocio(int dni) {
+        try (Connection conn = conectar(); PreparedStatement pstmt = conn.prepareStatement("DELETE FROM socios WHERE dni = ?")) {
+            pstmt.setInt(1, dni);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error eliminando socio: " + e.getMessage());
+        }
+    }
+
+    public static HashMap<Integer, Socio> cargarSocios() {
+        HashMap<Integer, Socio> mapa = new HashMap<>();
+        String sql = "SELECT * FROM socios";
+        try (Connection conn = conectar(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Socio s = null;
+                String tipo = rs.getString("tipo");
+                if ("DOC".equals(tipo)) {
+                    s = new Docente(rs.getInt("dni"), rs.getString("nombre"), rs.getString("extra"));
+                } else if ("EST".equals(tipo)) {
+                    // Ajusta si tu constructor de Estudiante es diferente
+                    s = new Estudiante(rs.getInt("dni"), rs.getString("nombre"), rs.getString("extra"));
+                }
+                if (s != null) mapa.put(s.getDniSocio(), s);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error cargando socios: " + e.getMessage());
+        }
+        return mapa;
+    }
+
+    // ================= MÉTODOS PARA PRÉSTAMOS =================
+
+    public static void guardarPrestamo(Prestamo p) {
+        String sql = "INSERT INTO prestamos(dni_socio, titulo_libro, edicion_libro, editorial_libro, anio_libro, fecha_retiro, fecha_devolucion) " +
+                     "VALUES(?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = conectar(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, p.getSocio().getDniSocio());
+            pstmt.setString(2, p.getLibro().getTitulo());
+            pstmt.setInt(3, p.getLibro().getEdicion());
+            pstmt.setString(4, p.getLibro().getEditorial());
+            pstmt.setInt(5, p.getLibro().getAnio());
+            pstmt.setLong(6, p.getFechaRetiro().getTimeInMillis());
+            
+            if (p.getFechaDevolucion() != null) {
+                pstmt.setLong(7, p.getFechaDevolucion().getTimeInMillis());
+            } else {
+                pstmt.setNull(7, Types.INTEGER);
+            }
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error guardando préstamo: " + e.getMessage());
+        }
+    }
+
+    public static void actualizarDevolucion(Prestamo p) {
+        // Actualiza el préstamo activo más reciente para este socio y libro
+        String sql = "UPDATE prestamos SET fecha_devolucion = ? WHERE dni_socio = ? AND titulo_libro = ? AND edicion_libro = ? AND fecha_devolucion IS NULL";
+        try (Connection conn = conectar(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, p.getFechaDevolucion().getTimeInMillis());
+            pstmt.setInt(2, p.getSocio().getDniSocio());
+            pstmt.setString(3, p.getLibro().getTitulo());
+            pstmt.setInt(4, p.getLibro().getEdicion());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error actualizando devolución: " + e.getMessage());
+        }
+    }
+
+    public static void cargarPrestamos(HashMap<Integer, Socio> socios, ArrayList<Libro> libros) {
+        String sql = "SELECT * FROM prestamos";
+        try (Connection conn = conectar(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                // 1. Encontrar al socio
+                Socio s = socios.get(rs.getInt("dni_socio"));
+                
+                // 2. Encontrar al libro exacto
+                Libro l = null;
+                for (Libro libro : libros) {
+                    if (libro.getTitulo().equals(rs.getString("titulo_libro")) &&
+                        libro.getEdicion() == rs.getInt("edicion_libro") &&
+                        libro.getEditorial().equals(rs.getString("editorial_libro")) &&
+                        libro.getAnio() == rs.getInt("anio_libro")) {
+                        l = libro;
+                        break;
+                    }
+                }
+
+                // 3. Si ambos existen, recrear el enlace
+                if (s != null && l != null) {
+                    Calendar fechaRetiro = new GregorianCalendar();
+                    fechaRetiro.setTimeInMillis(rs.getLong("fecha_retiro"));
+
+                    Prestamo p = new Prestamo(fechaRetiro, s, l);
+
+                    long devMillis = rs.getLong("fecha_devolucion");
+                    if (!rs.wasNull()) {
+                        Calendar fechaDev = new GregorianCalendar();
+                        fechaDev.setTimeInMillis(devMillis);
+                        p.registrarFechaDevolucion(fechaDev);
+                    }
+
+                    // ¡Esto es lo importante! Añadir el préstamo a las listas en memoria RAM
+                    s.agregarPrestamo(p);
+                    l.agregarPrestamo(p);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error cargando historial de préstamos: " + e.getMessage());
+        }
+    }
+}
