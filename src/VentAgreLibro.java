@@ -70,7 +70,7 @@ public class VentAgreLibro extends JDialog {
         // Como pediste, solo modificamos el 'Foreground' (color del texto)
 
         // Botón Agregar (Verde)
-        agregarButton.setForeground(new Color(40, 167, 69)); // Verde
+        agregarButton.setForeground(new Color(0, 128, 0)); // Verde
 
         // Botón Cancelar (Rojo)
         cancelarButton.setForeground(new Color(220, 53, 69)); // Rojo

@@ -59,7 +59,7 @@ public class VentRealizarPrestamo extends JDialog {
 
         // --- Colores de Botones ---
         // (Usando el estilo de "Quitar", con fondo y texto)
-        prestarButton.setForeground(new Color(40, 167, 69));
+        prestarButton.setForeground(new Color(0, 128, 0));
 
         cancelarButton.setForeground(new Color(108, 117, 125));
 

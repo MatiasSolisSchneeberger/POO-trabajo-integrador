@@ -37,7 +37,7 @@ public class VentAgreDoce extends JDialog {
         // Una ventana modal bloquea la ventana 'owner' (VentanaMain) hasta que
         // esta ventana (VentAgreDoce) se cierre. Evita que el usuario haga
         // clic en otros botones mientras agrega un docente.
-        super(owner, "Agregar Nuevo BibliotecaDocente", true);
+        super(owner, "Agregar Nuevo Docente", true);
 
         // Guardamos la referencia a la biblioteca que nos pasaron
         this.miBiblioteca = biblioteca;
@@ -85,7 +85,7 @@ public class VentAgreDoce extends JDialog {
         // --- Aplicamos los colores a los botones ---
 
         // Botón Agregar (Verde)
-        agregarButton.setForeground(new Color(40, 167, 69));
+        agregarButton.setForeground(new Color(0, 128, 0));
 
         // Botón Cancelar (Rojo)
         cancelarButton.setForeground(new Color(220, 53, 69));
@@ -162,7 +162,7 @@ public class VentAgreDoce extends JDialog {
 
             // 5. Informamos éxito y cerramos
             JOptionPane.showMessageDialog(this,
-                    "BibliotecaDocente agregado con éxito.",
+                    "Docente agregado con éxito.",
                     "Éxito",
                     JOptionPane.INFORMATION_MESSAGE); // Ícono de información
 

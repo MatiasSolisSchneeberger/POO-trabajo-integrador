@@ -29,7 +29,7 @@ public class VentAgreEstu extends JDialog { // Sigue siendo un JDialog
      */
     public VentAgreEstu(JFrame owner, Biblioteca biblioteca) {
         // 1. Configuración básica del JDialog
-        super(owner, "Agregar Nuevo BibliotecaEstudiante", true); // true = MODAL
+        super(owner, "Agregar Nuevo Estudiante", true); // true = MODAL
         this.miBiblioteca = biblioteca;
 
         // --- 2. Crear y Configurar Layouts y Componentes ---
@@ -65,7 +65,7 @@ public class VentAgreEstu extends JDialog { // Sigue siendo un JDialog
 
         // Botón Agregar (Verde)
         // Usamos colores RGB para un verde más agradable que Color.GREEN
-        agregarButton.setForeground(new Color(40, 167, 69));
+        agregarButton.setForeground(new Color(0, 128, 0));
 
         // Botón Cancelar (Rojo)
         // Usamos colores RGB para un rojo más agradable que Color.RED
@@ -123,7 +123,7 @@ public class VentAgreEstu extends JDialog { // Sigue siendo un JDialog
             miBiblioteca.nuevoSocioEstudiante(dni, nombre, carrera);
 
             // 3. Informar y cerrar
-            JOptionPane.showMessageDialog(this, "BibliotecaEstudiante agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Estudiante agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dispose(); // Cierra esta ventana de diálogo
 
         } catch (NumberFormatException ex) {
