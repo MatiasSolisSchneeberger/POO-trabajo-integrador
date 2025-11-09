@@ -1,0 +1,191 @@
+import java.util.Calendar;
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
+public class MenuPrincipal {
+    private static Biblioteca biblioteca;
+    private static Scanner scanner;
+
+    public static void main(String[] args) {
+        biblioteca = new Biblioteca("Biblioteca Central");
+        scanner = new Scanner(System.in);
+        int opcion = -1;
+
+        while (opcion != 0) {
+            try {
+                mostrarOpciones();
+                opcion = Integer.parseInt(scanner.nextLine());
+
+                switch (opcion) {
+                    case 1: agregarLibro(); break;
+                    case 2: agregarSocio(); break;
+                    case 3: prestarLibro(); break;
+                    case 4: devolverLibro(); break;
+                    case 5: verListados(); break;
+                    case 6: verQuienTieneLibro(); break;
+                    case 0: 
+                        System.out.println("Saliendo y guardando... ¡Adiós!"); 
+                        break;
+                    default: System.out.println("Opción desconocida.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Debes introducir un número válido.");
+            } catch (Exception e) {
+                System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+            }
+            System.out.println("\nPresiona ENTER para continuar...");
+            scanner.nextLine();
+        }
+    }
+
+    private static void mostrarOpciones() {
+        // Limpiamos un poco la consola (funciona en algunas terminales)
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();
+        
+        System.out.println("\n=== SISTEMA DE BIBLIOTECA ===");
+        System.out.println("1. Agregar Libro");
+        System.out.println("2. Agregar Socio");
+        System.out.println("3. PRESTAR Libro");
+        System.out.println("4. DEVOLVER Libro");
+        System.out.println("5. Ver Listados (Socios/Libros)");
+        System.out.println("6. Consultar ¿Quién tiene un libro?");
+        System.out.println("0. Salir");
+        System.out.print("Elige una opción: ");
+    }
+
+    // --- MÉTODOS AUXILIARES ---
+
+    private static void agregarLibro() {
+        System.out.println("\n--- NUEVO LIBRO ---");
+        try {
+            System.out.print("Título: "); String titulo = scanner.nextLine();
+            System.out.print("Edición (número): "); int edicion = Integer.parseInt(scanner.nextLine());
+            System.out.print("Editorial: "); String editorial = scanner.nextLine();
+            System.out.print("Año: "); int anio = Integer.parseInt(scanner.nextLine());
+
+            biblioteca.nuevoLibro(titulo, edicion, editorial, anio);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Edición y Año deben ser números.");
+        }
+    }
+
+    private static void agregarSocio() {
+        System.out.println("\n--- NUEVO SOCIO ---");
+        System.out.println("1. Estudiante\n2. Docente");
+        System.out.print("Tipo: ");
+        try {
+            int tipo = Integer.parseInt(scanner.nextLine());
+            System.out.print("DNI: "); int dni = Integer.parseInt(scanner.nextLine());
+            System.out.print("Nombre: "); String nombre = scanner.nextLine();
+
+            if (tipo == 1) {
+                System.out.print("Carrera: "); String carrera = scanner.nextLine();
+                biblioteca.nuevoSocioEstudiante(dni, nombre, carrera);
+            } else if (tipo == 2) {
+                System.out.print("Área: "); String area = scanner.nextLine();
+                biblioteca.nuevoSocioDocente(dni, nombre, area);
+            } else {
+                System.out.println("Tipo de socio no válido.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: DNI debe ser numérico.");
+        }
+    }
+
+    private static void prestarLibro() {
+        System.out.println("\n--- REALIZAR PRÉSTAMO ---");
+        try {
+            System.out.print("Ingrese DNI del socio: ");
+            int dni = Integer.parseInt(scanner.nextLine());
+            Socio socio = biblioteca.buscarSocio(dni);
+
+            if (socio == null) {
+                System.out.println("Socio no encontrado.");
+                return;
+            }
+
+            System.out.println("Ingrese datos del libro a prestar:");
+            System.out.print("Título exacto: "); String titulo = scanner.nextLine();
+            System.out.print("Edición: "); int edicion = Integer.parseInt(scanner.nextLine());
+
+            // Buscamos el libro en la lista
+            Libro libroAPrestar = null;
+            for (Libro l : biblioteca.getLibros()) {
+                if (l.getTitulo().equalsIgnoreCase(titulo) && l.getEdicion() == edicion) {
+                    libroAPrestar = l;
+                    break;
+                }
+            }
+
+            if (libroAPrestar == null) {
+                System.out.println("Libro no encontrado en la biblioteca.");
+                return;
+            }
+
+            // Intentar prestar
+            if (biblioteca.prestarLibro(Calendar.getInstance(), socio, libroAPrestar)) {
+                System.out.println("¡Préstamo realizado con éxito!");
+            } else {
+                System.out.println("NO se pudo realizar el préstamo (Libro ocupado o Socio no habilitado).");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error en los datos numéricos.");
+        }
+    }
+
+    private static void devolverLibro() {
+        System.out.println("\n--- DEVOLVER LIBRO ---");
+        try {
+            System.out.print("Título del libro a devolver: "); String titulo = scanner.nextLine();
+            System.out.print("Edición: "); int edicion = Integer.parseInt(scanner.nextLine());
+
+            // Buscar libro
+            Libro libroADevolver = null;
+            for (Libro l : biblioteca.getLibros()) {
+                if (l.getTitulo().equalsIgnoreCase(titulo) && l.getEdicion() == edicion) {
+                    libroADevolver = l;
+                    break;
+                }
+            }
+
+            if (libroADevolver != null) {
+                biblioteca.devolverLibro(libroADevolver);
+                // El mensaje de éxito ya lo imprime biblioteca.devolverLibro si todo sale bien
+            } else {
+                System.out.println("Libro no encontrado.");
+            }
+        } catch (LibroNoPrestadoException e) {
+            System.out.println("Error de devolución: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error al intentar devolver: " + e.getMessage());
+        }
+    }
+
+    private static void verListados() {
+        System.out.println("\n" + biblioteca.listaDeLibros());
+        System.out.println("\n" + biblioteca.listaDeSocios());
+        System.out.println("\n--- Préstamos Vencidos ---");
+        if (biblioteca.prestamosVencidos().isEmpty()) {
+            System.out.println("No hay préstamos vencidos.");
+        } else {
+            for (Prestamo p : biblioteca.prestamosVencidos()) {
+                System.out.println(p);
+            }
+        }
+    }
+
+    private static void verQuienTieneLibro() {
+        System.out.println("\n--- CONSULTA DE POSESIÓN ---");
+        System.out.print("Título exacto: "); String titulo = scanner.nextLine();
+        System.out.print("Edición: "); int edicion = Integer.parseInt(scanner.nextLine());
+        // Creamos un libro 'dummy' solo para buscarlo
+        Libro l = new Libro(titulo, edicion, "", 0, null);
+        try {
+            System.out.println(biblioteca.quienTieneElLibro(l));
+        } catch (LibroNoPrestadoException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
