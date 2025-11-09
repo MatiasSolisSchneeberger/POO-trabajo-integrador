@@ -14,12 +14,12 @@ public class Main {
             e.printStackTrace();
         }
 
-        // 2. Inicia la interfaz gráfica
+        // 1. Inicia la interfaz gráfica
         SwingUtilities.invokeLater(() -> {
-            // 3. Pasa la instancia de la biblioteca a la ventana (la "Vista")
+            // 2. Pasa la instancia de la biblioteca a la ventana (la "Vista")
             VentanaMain ventana = new VentanaMain(miBiblioteca);
 
-            // 4. La hace visible
+            // 3. La hace visible
             ventana.setVisible(true);
         });
     }
