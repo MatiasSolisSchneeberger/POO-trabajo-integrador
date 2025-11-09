@@ -1,81 +1,91 @@
 import javax.swing.*;
-import java.awt.*; // Para BorderLayout, FlowLayout, Font
+import java.awt.*;
 
 /**
- * VentListarSocios (Ventana Listar Socios)
+ * VentListSoci (Ventana Listar Socios - Genérica)
  *
  * Esta clase es un JDialog genérico diseñado para mostrar
  * un bloque de texto largo (como un reporte o listado).
  * Es modal, por lo que bloquea la ventana principal.
+ *
+ * @author Matias Solis Schneeberger
+ * @version 1.1.0
  */
 public class VentListSoci extends JDialog {
 
     // --- Componentes de la Interfaz ---
-    private JTextArea textArea; // El componente estrella para mostrar texto
-    private JScrollPane scrollPane; // El contenedor que le da barras de scroll
+    private JTextArea textArea;
     private JButton cerrarButton;
+
+    // --- Constantes ---
+    private static final Color COLOR_ROJO = new Color(220, 53, 69);
 
     /**
      * Constructor del diálogo
      *
-     * @param owner   La ventana "padre" (VentanaMain)
-     * @param titulo  El título que queremos ponerle a la ventana
+     * @param owner     La ventana "padre" (VentanaMain)
+     * @param titulo    El título que queremos ponerle a la ventana
      * @param contenido El String (posiblemente muy largo) que queremos mostrar
      */
     public VentListSoci(JFrame owner, String titulo, String contenido) {
-
         // 1. Configuración básica del JDialog
         super(owner, titulo, true); // true = MODAL
 
-        // --- 2. Crear y Configurar Layouts y Componentes ---
+        initUI(contenido); // Pasamos el contenido para la creación de la UI
+        initDialog();
+        initListeners();
+    }
 
+    /**
+     * Inicializa y ensambla todos los componentes de la UI.
+     * @param contenido El texto a mostrar en el JTextArea.
+     */
+    private void initUI(String contenido) {
         // Panel principal con BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // --- Área de Texto (CENTER) ---
-
-        // Creamos el JTextArea. 20 filas y 50 columnas son un tamaño
-        // "sugerido" para que 'pack()' sepa qué tan grande hacerlo.
+        // 20 filas y 50 columnas son un tamaño "sugerido"
         textArea = new JTextArea(20, 50);
+        textArea.setText(contenido); // ¡Clave 1! Asignamos el contenido
+        textArea.setEditable(false); // ¡Clave 2! No editable
 
-        // ¡Clave 1! Le pasamos el String completo que nos llegó
-        textArea.setText(contenido);
+        // Usamos una fuente SANS_SERIF estándar
+        textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 
-        // ¡Clave 2! No queremos que el usuario pueda escribir en el listado
-        textArea.setEditable(false);
-
-        // ¡Pro-Tip! Usamos una fuente "Monospaced" (como Consolas o Courier).
-        // Esto hace que el texto se vea como en la consola, y si tienes
-        // columnas de texto, se alinearán perfectamente.
-        textArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN, 12));
-
-        // ¡Clave 3! Creamos un JScrollPane y "envolvemos" el textArea con él.
-        // Si el 'contenido' tiene más de 20 filas, aparecerán las barras
-        // de scroll automáticamente.
-        scrollPane = new JScrollPane(textArea);
+        // ¡Clave 3! "Envolvemos" el textArea en un JScrollPane
+        JScrollPane scrollPane = new JScrollPane(textArea);
 
         // --- Panel de Botones (SOUTH) ---
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         cerrarButton = new JButton("Cerrar");
-
-        // Recuerda que la solución del UIManager ya quita el foco,
-        // pero lo ponemos aquí por si acaso.
-        cerrarButton.setFocusPainted(false);
+        cerrarButton.setForeground(COLOR_ROJO); // Aplicamos color de texto
 
         buttonPanel.add(cerrarButton);
 
-        // --- 3. Ensamblar la ventana ---
-        mainPanel.add(scrollPane, BorderLayout.CENTER); // El scroll (con texto) al centro
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH); // El botón abajo
+        // --- Ensamblar la ventana ---
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         setContentPane(mainPanel);
+    }
 
-        // --- 4. Configuración final del JDialog ---
+    /**
+     * Configura las propiedades finales de este JDialog.
+     */
+    private void initDialog() {
         pack(); // Ajusta el tamaño al JTextArea (20x50)
-        setLocationRelativeTo(owner); // Centra
+        setLocationRelativeTo(getOwner()); // Centra
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Cierra solo esta ventana
+    }
 
-        // --- 5. Action Listeners ---
+    /**
+     * Asigna todos los ActionListeners a los componentes.
+     */
+    private void initListeners() {
+        // Asigna el botón por defecto para la tecla "Enter"
+        getRootPane().setDefaultButton(cerrarButton);
+
         cerrarButton.addActionListener(e -> dispose()); // dispose() cierra el JDialog
     }
 }

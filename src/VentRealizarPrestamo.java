@@ -1,14 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList; // Para buscar en la lista de libros
-import java.util.Calendar;  // Para la fecha de retiro
-import java.util.GregorianCalendar; // Para la fecha de retiro
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * VentRealizarPrestamo (Ventana Realizar Préstamo)
- * <p>
+ *
  * JDialog modal para gestionar un nuevo préstamo.
  * Simplifica la búsqueda pidiendo solo el DNI del socio y el TÍTULO del libro.
+ *
+ * @author Matias Solis Schneeberger
+ * @version 1.1.0
  */
 public class VentRealizarPrestamo extends JDialog {
 
@@ -21,6 +24,10 @@ public class VentRealizarPrestamo extends JDialog {
     // --- Lógica de Negocio ---
     private Biblioteca miBiblioteca;
 
+    // --- Constantes ---
+    private static final Color COLOR_ROJO = new Color(220, 53, 69);
+    private static final Color COLOR_VERDE = new Color(40, 167, 69);
+
     /**
      * Constructor del diálogo
      *
@@ -28,19 +35,23 @@ public class VentRealizarPrestamo extends JDialog {
      * @param biblioteca La instancia de la lógica de negocio
      */
     public VentRealizarPrestamo(JFrame owner, Biblioteca biblioteca) {
-
-        // 1. Configuración básica del JDialog
         super(owner, "Realizar Préstamo", true); // true = MODAL
         this.miBiblioteca = biblioteca;
 
-        // --- 2. Crear y Configurar Layouts y Componentes ---
+        initUI();
+        initDialog();
+        initListeners();
+    }
 
+    /**
+     * Inicializa y ensambla todos los componentes de la UI.
+     */
+    private void initUI() {
         // Panel principal con BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // --- Panel del Formulario (CENTER) ---
-        // GridLayout (0, 2) -> N filas, 2 columnas
         JPanel fieldsPanel = new JPanel(new GridLayout(0, 2, 5, 5));
 
         dniField = new JTextField(20);
@@ -53,33 +64,36 @@ public class VentRealizarPrestamo extends JDialog {
 
         // --- Panel de Botones (SOUTH) ---
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
         prestarButton = new JButton("Realizar Préstamo");
         cancelarButton = new JButton("Cancelar");
 
-        // --- Colores de Botones ---
-        // (Usando el estilo de "Quitar", con fondo y texto)
-        prestarButton.setForeground(new Color(40, 167, 69));
-
-        cancelarButton.setForeground(new Color(108, 117, 125));
+        // --- Colores de Texto ---
+        prestarButton.setForeground(COLOR_VERDE);
+        cancelarButton.setForeground(COLOR_ROJO); // Corregido de gris a rojo
 
         buttonPanel.add(cancelarButton);
         buttonPanel.add(prestarButton);
 
-        // --- 3. Ensamblar la ventana ---
+        // --- Ensamblar ---
         mainPanel.add(fieldsPanel, BorderLayout.CENTER);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         setContentPane(mainPanel);
+    }
 
-        // --- 4. Configuración final del JDialog ---
+    /**
+     * Configura las propiedades finales de este JDialog.
+     */
+    private void initDialog() {
         pack(); // Ajusta el tamaño
-        setLocationRelativeTo(owner); // Centra
+        setLocationRelativeTo(getOwner()); // Centra
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Cierra solo esta ventana
+    }
 
-        // --- 5. Funcionalidad "Enter" ---
-        getRootPane().setDefaultButton(prestarButton);
-
-        // --- 6. Action Listeners ---
+    /**
+     * Asigna todos los ActionListeners a los componentes.
+     */
+    private void initListeners() {
+        getRootPane().setDefaultButton(prestarButton); // Botón por defecto para "Enter"
         prestarButton.addActionListener(e -> onPrestar());
         cancelarButton.addActionListener(e -> dispose());
     }
@@ -91,8 +105,8 @@ public class VentRealizarPrestamo extends JDialog {
         try {
             // 1. Obtener y validar DNI
             String dniStr = dniField.getText().trim();
-            if (dniStr.isBlank()) {
-                JOptionPane.showMessageDialog(this, "Debe ingresar un DNI.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (dniStr.isBlank() || dniStr.length() > 8) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un DNI válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             int dni = Integer.parseInt(dniStr);
@@ -115,43 +129,32 @@ public class VentRealizarPrestamo extends JDialog {
                 return;
             }
 
-            // 4. Lógica de búsqueda de libro (como pediste)
-            // Buscamos la *primera copia disponible* que coincida con el título.
+            // 4. Lógica de búsqueda de libro
             Libro libroAPrestar = null;
             boolean tituloExiste = false;
 
             for (Libro libro : miBiblioteca.getLibros()) {
                 if (libro.getTitulo().equalsIgnoreCase(titulo)) {
-                    tituloExiste = true; // Marcamos que el título sí existe
+                    tituloExiste = true;
                     if (!libro.prestado()) {
                         libroAPrestar = libro; // ¡Encontramos una copia disponible!
-                        break; // Dejamos de buscar
+                        break;
                     }
                 }
             }
 
             // 5. Validar resultado de la búsqueda
             if (libroAPrestar == null) {
-                // Si no encontramos un libro disponible...
                 if (tituloExiste) {
-                    // ...es porque el título existe, pero todas las copias están prestadas.
-                    JOptionPane.showMessageDialog(this,
-                            "Todas las copias de '" + titulo + "' se encuentran prestadas.",
-                            "Libro No Disponible", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Todas las copias de '" + titulo + "' se encuentran prestadas.", "Libro No Disponible", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    // ...o el título directamente no existe en la biblioteca.
-                    JOptionPane.showMessageDialog(this,
-                            "No se encontró ningún libro con el título: '" + titulo + "'",
-                            "Libro No Encontrado", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se encontró ningún libro con el título: '" + titulo + "'", "Libro No Encontrado", JOptionPane.ERROR_MESSAGE);
                 }
-                return; // Cortamos la ejecución
+                return;
             }
 
-            // 6. ¡Tenemos Socio y Libro! Intentamos el préstamo.
-            // Usamos la fecha actual, como en TestBiblioteca 
+            // 6. Intentar el préstamo
             Calendar fechaRetiro = new GregorianCalendar();
-
-            // El método prestarLibro() ya valida si el socio puede pedir
             if (miBiblioteca.prestarLibro(fechaRetiro, socio, libroAPrestar)) {
                 JOptionPane.showMessageDialog(this,
                         "Préstamo realizado con éxito:\n\n" +
@@ -159,11 +162,10 @@ public class VentRealizarPrestamo extends JDialog {
                                 "Libro: " + libroAPrestar.getTitulo() + " (Ed. " + libroAPrestar.getEdicion() + ")\n" +
                                 "Días para devolver: " + socio.getDiasPrestamo(),
                         "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                dispose(); // Cerramos la ventana
+                dispose();
             } else {
-                // El préstamo falló (normalmente porque el socio no está habilitado)
                 JOptionPane.showMessageDialog(this,
-                        "Préstamo NO realizado. \n" +
+                        "Préstamo NO realizado.\n\n" +
                                 "Causa probable: El socio no está habilitado para pedir (tiene préstamos vencidos o excedió su límite).",
                         "Préstamo Rechazado", JOptionPane.ERROR_MESSAGE);
             }

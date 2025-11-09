@@ -44,10 +44,10 @@ public class TestBiblioteca {
                         System.out.println("👋 Saliendo del sistema de la biblioteca. ¡Hasta pronto!");
                         break;
                     default:
-                        System.out.println("❌ Opción no válida. Intente de nuevo.");
+                        System.out.println("Opción no válida. Intente de nuevo.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error en la operación: " + e.getMessage());
+                System.out.println("Error en la operación: " + e.getMessage());
             }
 
             if (opcion != 0) {
@@ -63,7 +63,7 @@ public class TestBiblioteca {
      * Inicializa algunos datos de ejemplo (socios y libros) para facilitar las pruebas.
      */
     private static void inicializarDatos() {
-        System.out.println("🛠️ Inicializando datos de prueba...");
+        System.out.println("Inicializando datos de prueba...");
 
         // Socios Estudiantes (días de préstamo por defecto: 20, según ctor de Estudiante)
         miBiblioteca.nuevoSocioEstudiante(12345678, "Ana Garcia", "Ingeniería");
@@ -81,7 +81,7 @@ public class TestBiblioteca {
         miBiblioteca.nuevoLibro("Química Orgánica", 3, "Mc Graw Hill", 2010);
         miBiblioteca.nuevoLibro("Química Orgánica", 3, "Mc Graw Hill", 2010); // Duplicado para prueba
 
-        System.out.println("✅ Datos de prueba cargados.\n");
+        System.out.println("Datos de prueba cargados.\n");
     }
 
     // --- Menús y Lógica de Interacción ---
@@ -132,7 +132,7 @@ public class TestBiblioteca {
                     System.out.println("↩️ Volviendo al menú principal.");
                     break;
                 default:
-                    System.out.println("❌ Opción no válida.");
+                    System.out.println("Opción no válida.");
             }
             if (opcion != 0) pausar();
         } while (opcion != 0);
@@ -170,7 +170,7 @@ public class TestBiblioteca {
             if (docente.esResponsable()) {
                 int dias = leerEntero("Días a sumar/restar (ej: 3, -2): ");
                 docente.cambiarDiasDePrestamo(dias);
-                System.out.println("✅ Días de préstamo cambiados. Nuevo límite: " + docente.getDiasPrestamo() + " días.");
+                System.out.println("Días de préstamo cambiados. Nuevo límite: " + docente.getDiasPrestamo() + " días.");
             } else {
                 System.out.println("🚫 El docente no es responsable. No se puede cambiar el límite de días.");
             }
@@ -215,7 +215,7 @@ public class TestBiblioteca {
                     System.out.println("↩️ Volviendo al menú principal.");
                     break;
                 default:
-                    System.out.println("❌ Opción no válida.");
+                    System.out.println("Opción no válida.");
             }
             if (opcion != 0) pausar();
         } while (opcion != 0);
@@ -268,7 +268,7 @@ public class TestBiblioteca {
                     System.out.println("↩️ Volviendo al menú principal.");
                     break;
                 default:
-                    System.out.println("❌ Opción no válida.");
+                    System.out.println("Opción no válida.");
             }
             if (opcion != 0) pausar();
         } while (opcion != 0);
@@ -298,11 +298,11 @@ public class TestBiblioteca {
         Calendar fechaRetiro = new GregorianCalendar();
 
         if (miBiblioteca.prestarLibro(fechaRetiro, socio, libroAPrestar)) {
-            System.out.println("✅ Préstamo realizado con éxito.");
+            System.out.println("Préstamo realizado con éxito.");
             System.out.println("Socio: " + socio.getNombre() + " | Libro: " + libroAPrestar.getTitulo());
             System.out.println("Días límite de préstamo: " + socio.getDiasPrestamo() + " días.");
         } else {
-            System.out.println("❌ Préstamo **NO** realizado.");
+            System.out.println("Préstamo **NO** realizado.");
             if (!socio.puedePedir()) {
                 System.out.println("   Razón: El socio no está habilitado para pedir.");
             }
@@ -328,9 +328,9 @@ public class TestBiblioteca {
 
         try {
             miBiblioteca.devolverLibro(libroADevolver);
-            System.out.println("✅ Devolución de \"" + libroADevolver.getTitulo() + "\" registrada con éxito.");
+            System.out.println("Devolución de \"" + libroADevolver.getTitulo() + "\" registrada con éxito.");
         } catch (LibroNoPrestadoException e) {
-            System.out.println("❌ Error en la devolución: " + e.getMessage());
+            System.out.println("Error en la devolución: " + e.getMessage());
         }
     }
 
@@ -346,7 +346,7 @@ public class TestBiblioteca {
         System.out.println("\n--- Estado de Habilitación de " + socio.getNombre() + " (" + socio.soyDeLaClase() + ") ---");
 
         if (socio.puedePedir()) {
-            System.out.println("✅ ¡El socio está **habilitado** para pedir un nuevo libro!");
+            System.out.println("¡El socio está **habilitado** para pedir un nuevo libro!");
         } else {
             System.out.println("🚫 El socio **NO** está habilitado para pedir un nuevo libro.");
 
@@ -398,7 +398,7 @@ public class TestBiblioteca {
                     System.out.println("↩️ Volviendo al menú principal.");
                     break;
                 default:
-                    System.out.println("❌ Opción no válida.");
+                    System.out.println("Opción no válida.");
             }
             if (opcion != 0) pausar();
         } while (opcion != 0);
@@ -455,7 +455,7 @@ public class TestBiblioteca {
             }
 
         } catch (LibroNoPrestadoException e) {
-            System.out.println("ℹ️  " + e.getMessage());
+            System.out.println(" " + e.getMessage());
         }
     }
 
@@ -464,7 +464,7 @@ public class TestBiblioteca {
     private static int leerEntero(String mensaje) {
         System.out.print(mensaje);
         while (!scanner.hasNextInt()) {
-            System.out.println("❌ Entrada no válida. Ingrese un número entero.");
+            System.out.println("Entrada no válida. Ingrese un número entero.");
             scanner.next(); // consumir la entrada inválida
             System.out.print(mensaje);
         }

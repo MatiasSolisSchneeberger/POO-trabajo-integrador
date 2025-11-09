@@ -25,8 +25,11 @@ public class Main {
         });
     }
 
+    /**
+     * Inicializar datos para hacer mas facil
+     * */
     private static void inicializarDatos() {
-        System.out.println("🛠️ Inicializando datos de prueba...");
+        System.out.println("Inicializando datos de prueba...");
 
         // Socios Estudiantes (días de préstamo por defecto: 20, según ctor de BibliotecaEstudiante)
         miBiblioteca.nuevoSocioEstudiante(12345678, "Ana Garcia", "Ingeniería");
@@ -44,6 +47,6 @@ public class Main {
         miBiblioteca.nuevoLibro("Química Orgánica", 3, "Mc Graw Hill", 2010);
         miBiblioteca.nuevoLibro("Química Orgánica", 3, "Mc Graw Hill", 2010); // Duplicado para prueba
 
-        System.out.println("✅ Datos de prueba cargados.\n");
+        System.out.println("Datos de prueba cargados.\n");
     }
 }

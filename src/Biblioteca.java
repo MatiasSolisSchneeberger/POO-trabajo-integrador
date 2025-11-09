@@ -344,7 +344,7 @@ public class Biblioteca {
      * Añade un nuevo socio de tipo estudiante
      */
     public void nuevoSocioEstudiante(int p_DniSocio, String p_Nombre, String p_Carrera) {
-        this.agregarSocio(new Estudiante(p_DniSocio, p_Nombre, 20, p_Carrera));
+        this.agregarSocio(new Estudiante(p_DniSocio, p_Nombre, p_Carrera));
     }
 
     /**
