@@ -6,7 +6,7 @@ import java.io.*;
 public class GestorPersistencia {
 
     private static final String NOMBRE_ARCHIVO = "datos_biblioteca.dat";
-    private static final String NOMBRE_BIBLIOTECA = "Biblioteca Central UNL";
+    private static final String NOMBRE_BIBLIOTECA = "Biblioteca Centar de la UNNE";
 
     /**
      * Guarda el estado completo de la Biblioteca en un archivo.
