@@ -1,16 +1,15 @@
 import java.util.*; // Calendar, GregorianCalendar, ArrayList, HashMap, Map, Iterator, Set, LinkedHashSet
+import java.io.Serializable;
 
 /**
  * Clase Biblioteca
  */
-public class Biblioteca {
+public class Biblioteca implements java.io.Serializable{
 
     // ================= Atributos
     private String nombre;
     private HashMap<Integer, Socio> socios; // (guía) socios por DNI
     private ArrayList<Libro> libros;
-
-    // ================= Constructores
 
     /**
      * Constructor que instancia los atributos del objeto de la clase Biblioteca
@@ -271,7 +270,7 @@ public class Biblioteca {
             String lista = "Lista de Socios: \n";
             for (Map.Entry<Integer, Socio> e : this.getSocios().entrySet()) {
                 Socio s = e.getValue();
-                lista = s.toString() + "\n";
+                lista += s.toString() + "\n";
             }
             lista = lista
                     + "******\n"
@@ -303,7 +302,7 @@ public class Biblioteca {
      * Devuelve una lista de títulos SIN repetir
      */
     public String listaDeTitulos() {
-        // Usamos LinkedHashSet para no repetir y conservar orden de aparición
+        // Usamos LinkedHashSet para no repetir y conservar orden de aparición.
         Set<String> set = new LinkedHashSet<>();
         for (Libro l : this.getLibros()) {
             set.add(l.getTitulo());
@@ -320,14 +319,9 @@ public class Biblioteca {
      * Devuelve un listado de docentes responsables
      */
     public String listaDeDocentesResponsables() {
-        String docentes = "";
         for (Docente d : this.docentesResponsables()) {
-            docentes = d.toString()
-                    + " || "
-                    + "Libros Prestados: " + d.cantLibrosPrestados()
-                    + "\n";
+             return d.toString();
         }
-        return docentes;
     }
 
 
