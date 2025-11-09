@@ -1,5 +1,7 @@
 lib/
 .idea/
 out/
+*.ctxt
+*.class
 
 POO-trabajo-integrador.iml

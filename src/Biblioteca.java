@@ -271,7 +271,7 @@ public class Biblioteca {
             String lista = "Lista de Socios: \n";
             for (Map.Entry<Integer, Socio> e : this.getSocios().entrySet()) {
                 Socio s = e.getValue();
-                lista = s.toString() + "\n";
+                lista = lista + s.toString() + "\n";
             }
             lista = lista
                     + "******\n"
@@ -344,7 +344,6 @@ public class Biblioteca {
      * Añade un nuevo socio de tipo estudiante
      */
     public void nuevoSocioEstudiante(int p_DniSocio, String p_Nombre, String p_Carrera) {
-        // CAMBIO: por consigna, estudiantes suelen tener 20 días; ajustá si tu ctor no lo pide
         this.agregarSocio(new Estudiante(p_DniSocio, p_Nombre, 20, p_Carrera));
     }
 
@@ -352,7 +351,6 @@ public class Biblioteca {
      * Añade un nuevo socio de tipo docente
      */
     public void nuevoSocioDocente(int p_DniSocio, String p_Nombre, String p_Area) {
-        // CAMBIO: por consigna, docentes suelen tener 5 días base; ajustá si tu ctor no lo pide
         this.agregarSocio(new Docente(p_DniSocio, p_Nombre, p_Area));
     }
 }
