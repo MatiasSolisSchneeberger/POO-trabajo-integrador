@@ -7,7 +7,7 @@ import java.util.ArrayList; // <-- ¡ESTA LÍNEA FALTABA!
  * Clase ejecutable para probar las funcionalidades de la clase Biblioteca.
  * Simula un sistema de gestión de biblioteca a través de un menú interactivo.
  *
- * @author Gemini
+ * @author ...
  * @version 04/11/2025
  */
 public class TestBiblioteca {
