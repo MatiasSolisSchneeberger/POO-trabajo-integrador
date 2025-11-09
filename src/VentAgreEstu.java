@@ -1,8 +1,10 @@
+
+
 import javax.swing.*;
 import java.awt.*; // Necesario para los LayoutManagers (BorderLayout, GridLayout, etc.)
 
 /**
- * VentAgreEstu (Ventana Agregar Estudiante)
+ * VentAgreEstu (Ventana Agregar BibliotecaEstudiante)
  * <p>
  * Esta clase es un JDialog MODAL.
  * 'JDialog' significa que es una ventana secundaria (como un popup).
@@ -29,7 +31,7 @@ public class VentAgreEstu extends JDialog { // Sigue siendo un JDialog
      */
     public VentAgreEstu(JFrame owner, Biblioteca biblioteca) {
         // 1. Configuración básica del JDialog
-        super(owner, "Agregar Nuevo Estudiante", true); // true = MODAL
+        super(owner, "Agregar Nuevo BibliotecaEstudiante", true); // true = MODAL
         this.miBiblioteca = biblioteca;
 
         // --- 2. Crear y Configurar Layouts y Componentes ---
@@ -123,7 +125,7 @@ public class VentAgreEstu extends JDialog { // Sigue siendo un JDialog
             miBiblioteca.nuevoSocioEstudiante(dni, nombre, carrera);
 
             // 3. Informar y cerrar
-            JOptionPane.showMessageDialog(this, "Estudiante agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "BibliotecaEstudiante agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dispose(); // Cierra esta ventana de diálogo
 
         } catch (NumberFormatException ex) {

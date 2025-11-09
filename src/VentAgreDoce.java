@@ -1,8 +1,10 @@
+
+
 import javax.swing.*;
 import java.awt.*; // Importamos 'awt' para los LayoutManagers (BorderLayout, GridLayout) y Colores
 
 /**
- * VentAgreDoce (Ventana Agregar Docente)
+ * VentAgreDoce (Ventana Agregar BibliotecaDocente)
  *
  * Esta clase extiende JDialog, que es el tipo de ventana ideal para un
  * formulario emergente. No es un JFrame (ventana principal).
@@ -35,7 +37,7 @@ public class VentAgreDoce extends JDialog {
         // Una ventana modal bloquea la ventana 'owner' (VentanaMain) hasta que
         // esta ventana (VentAgreDoce) se cierre. Evita que el usuario haga
         // clic en otros botones mientras agrega un docente.
-        super(owner, "Agregar Nuevo Docente", true);
+        super(owner, "Agregar Nuevo BibliotecaDocente", true);
 
         // Guardamos la referencia a la biblioteca que nos pasaron
         this.miBiblioteca = biblioteca;
@@ -68,7 +70,7 @@ public class VentAgreDoce extends JDialog {
         fieldsPanel.add(dniField);
         fieldsPanel.add(new JLabel("Nombre:"));
         fieldsPanel.add(nombreField);
-        fieldsPanel.add(new JLabel("Área:")); // <-- El campo específico de Docente
+        fieldsPanel.add(new JLabel("Área:")); // <-- El campo específico de BibliotecaDocente
         fieldsPanel.add(areaField);
 
         // --- Panel de Botones (lo pondremos en el SUR) ---
@@ -130,7 +132,7 @@ public class VentAgreDoce extends JDialog {
             // 1. Obtenemos los datos de los campos de texto
             String dniStr = dniField.getText();
             String nombre = nombreField.getText();
-            String area = areaField.getText(); // <-- El campo de Docente
+            String area = areaField.getText(); // <-- El campo de BibliotecaDocente
 
             // 2. Validamos que no estén vacíos
             // .isBlank() es como .isEmpty() pero también detecta si solo hay espacios
@@ -160,7 +162,7 @@ public class VentAgreDoce extends JDialog {
 
             // 5. Informamos éxito y cerramos
             JOptionPane.showMessageDialog(this,
-                    "Docente agregado con éxito.",
+                    "BibliotecaDocente agregado con éxito.",
                     "Éxito",
                     JOptionPane.INFORMATION_MESSAGE); // Ícono de información
 

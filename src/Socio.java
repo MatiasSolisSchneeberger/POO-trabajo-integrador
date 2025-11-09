@@ -144,7 +144,7 @@ public abstract class Socio {
     @Override
     public String toString() {
         return "D.N.I.: " + this.getDniSocio() +
-                " ||" + this.getNombre() +
+                " || " + this.getNombre() +
                 " (" + this.soyDeLaClase() + ")" +
                 " || Libros Prestados: " + this.cantLibrosPrestados();
     }

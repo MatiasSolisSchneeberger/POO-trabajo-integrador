@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*; // Para BorderLayout, FlowLayout, Font, Color
 
 /**
- * VentQuitarSocio (Ventana Quitar Socio)
+ * VentQuitarSocio (Ventana Quitar BibliotecaSocio)
  * <p>
  * Este JDialog es un ejemplo de una interfaz más compleja.
  * Muestra información (el listado) y permite realizar acciones (quitar)
@@ -29,7 +29,7 @@ public class VentQuitarSocio extends JDialog {
     public VentQuitarSocio(JFrame owner, Biblioteca biblioteca) {
 
         // 1. Configuración básica del JDialog
-        super(owner, "Quitar Socio", true); // true = MODAL
+        super(owner, "Quitar BibliotecaSocio", true); // true = MODAL
         this.miBiblioteca = biblioteca;
 
         // --- 2. Crear y Configurar Layouts y Componentes ---
@@ -59,7 +59,7 @@ public class VentQuitarSocio extends JDialog {
 
         // Panel para la entrada de DNI y botón de Quitar
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        actionPanel.add(new JLabel("DNI del Socio a Quitar:"));
+        actionPanel.add(new JLabel("DNI del BibliotecaSocio a Quitar:"));
         dniField = new JTextField(10); // 10 caracteres para el DNI
         actionPanel.add(dniField);
         quitarButton = new JButton("Quitar");
@@ -163,7 +163,7 @@ public class VentQuitarSocio extends JDialog {
                 miBiblioteca.quitarSocio(socio);
 
                 // Damos feedback de éxito
-                JOptionPane.showMessageDialog(this, "Socio eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "BibliotecaSocio eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
                 // --- ¡La parte clave! ---
                 cargarListaSocios();  // Recargamos la lista para que se vea el cambio
