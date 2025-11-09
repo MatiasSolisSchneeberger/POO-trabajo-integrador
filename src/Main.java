@@ -1,8 +1,8 @@
 import javax.swing.*;
 
 public class Main {
-    private static final Biblioteca miBiblioteca = new Biblioteca("Biblioteca Central UNL");
-
+    //private static final Biblioteca miBiblioteca = new Biblioteca("Biblioteca Central UNL");
+    private static final Biblioteca miBiblioteca = GestorPersistencia.cargar();
     public static void main(String[] args) {
         // Establecer el Look and Feel del sistema operativo (Windows, etc.)
         try {
@@ -14,22 +14,21 @@ public class Main {
         }
 
         // 1. Crea la instancia de la lógica de negocio (el "Modelo")
-        inicializarDatos();
+        if(miBiblioteca.getSocios().isEmpty() && miBiblioteca.getLibros().isEmpty()){
+            inicializarDatos();
+        }
         // 2. Inicia la interfaz gráfica
         SwingUtilities.invokeLater(() -> {
             // 3. Pasa la instancia de la biblioteca a la ventana (la "Vista")
             VentanaMain ventana = new VentanaMain(miBiblioteca);
-
+            
             // 4. La hace visible
             ventana.setVisible(true);
         });
     }
 
-    /**
-     * Inicializar datos para hacer mas facil
-     * */
     private static void inicializarDatos() {
-        System.out.println("Inicializando datos de prueba...");
+        System.out.println("🛠️ Inicializando datos de prueba...");
 
         // Socios Estudiantes (días de préstamo por defecto: 20, según ctor de BibliotecaEstudiante)
         miBiblioteca.nuevoSocioEstudiante(12345678, "Ana Garcia", "Ingeniería");
@@ -47,6 +46,6 @@ public class Main {
         miBiblioteca.nuevoLibro("Química Orgánica", 3, "Mc Graw Hill", 2010);
         miBiblioteca.nuevoLibro("Química Orgánica", 3, "Mc Graw Hill", 2010); // Duplicado para prueba
 
-        System.out.println("Datos de prueba cargados.\n");
+        System.out.println("✅ Datos de prueba cargados.\n");
     }
 }

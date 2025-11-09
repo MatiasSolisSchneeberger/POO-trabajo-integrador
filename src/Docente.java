@@ -1,5 +1,5 @@
 import java.util.Calendar;
-
+import java.io.Serializable;
 /**
  * Representa a un **Docente** en el sistema de la biblioteca.
  * <p>
@@ -9,7 +9,7 @@ import java.util.Calendar;
  * @author Escobar Lucas
  * @version 01/11/2025
  */
-public class Docente extends Socio {
+public class Docente extends Socio implements java.io.Serializable{
     private String area;
 
     /**

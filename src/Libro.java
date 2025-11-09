@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.io.Serializable;
 /**
  * Representa a un libro, con sus datos bibliográficos (título, edición, editorial, año)
  * y gestiona su historial de préstamos.
@@ -8,7 +8,7 @@ import java.util.Calendar;
  * @author ...
  * @version 1.0
  */
-public class Libro {
+public class Libro implements java.io.Serializable{
     private String titulo;
     private int edicion;
     private String editorial;

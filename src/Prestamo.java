@@ -1,6 +1,6 @@
 import java.text.SimpleDateFormat; // para dar formato a las fechas
 import java.util.Calendar;
-
+import java.io.Serializable;
 /**
  * Representa un préstamo de un libro a un socio de la biblioteca.
  * Contiene información sobre el socio, el libro, la fecha en que se realizó
@@ -9,7 +9,7 @@ import java.util.Calendar;
  * @author Matia Solis Schneeberger
  * @version 1.0.0
  */
-public class Prestamo {
+public class Prestamo implements java.io.Serializable{
     private Calendar fechaRetiro;
     private Calendar fechaDevolucion;
     private Socio socio;

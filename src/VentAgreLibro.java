@@ -3,12 +3,9 @@ import java.awt.*; // Para Layouts, Color, etc.
 
 /**
  * VentAgreLibro (Ventana Agregar Libro)
- *
+ * <p>
  * Esta clase es un JDialog modal para ingresar los datos de un nuevo libro.
- * Se construye por código, sin un .form, para mayor claridad y mantenimiento.
- *
- * @author Matias Solis Schneeberger
- * @version 1.1.0
+ * Se construye por código, sin un .form, para mayor claridad.
  */
 public class VentAgreLibro extends JDialog {
 
@@ -30,31 +27,29 @@ public class VentAgreLibro extends JDialog {
      * @param biblioteca La instancia de la lógica de negocio
      */
     public VentAgreLibro(JFrame owner, Biblioteca biblioteca) {
+
         // 1. Configuración básica del JDialog
         super(owner, "Agregar Nuevo Libro", true); // true = MODAL
         this.miBiblioteca = biblioteca;
 
-        initUI();        // Construye los componentes visuales
-        initDialog();    // Configura las propiedades de este JDialog
-        initListeners(); // Asigna la lógica a los botones
-    }
+        // --- 2. Crear y Configurar Layouts y Componentes ---
 
-    /**
-     * Inicializa y ensambla todos los componentes de la UI.
-     */
-    private void initUI() {
         // Panel principal con BorderLayout (zonas Centro y Sur)
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
+        // Padding (borde vacío)
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // --- Panel del Formulario (CENTER) ---
-        JPanel fieldsPanel = new JPanel(new GridLayout(0, 2, 5, 5)); // N filas, 2 columnas
+        // GridLayout (0, 2) -> N filas, 2 columnas
+        JPanel fieldsPanel = new JPanel(new GridLayout(0, 2, 5, 5)); // (filas, cols, hgap, vgap)
 
+        // Inicializamos los componentes de texto
         tituloField = new JTextField(20);
         edicionField = new JTextField(5); // Edición es un número corto
         editorialField = new JTextField(20);
         anioField = new JTextField(5); // Año es un número corto
 
+        // Agregamos etiquetas y campos al panel del formulario
         fieldsPanel.add(new JLabel("Título:"));
         fieldsPanel.add(tituloField);
         fieldsPanel.add(new JLabel("Edición:"));
@@ -65,40 +60,40 @@ public class VentAgreLibro extends JDialog {
         fieldsPanel.add(anioField);
 
         // --- Panel de Botones (SOUTH) ---
+        // FlowLayout alineado a la derecha
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         agregarButton = new JButton("Agregar");
         cancelarButton = new JButton("Cancelar");
 
-        // --- Estilo de Botones (Solo color de texto) ---
+        // --- Aplicamos los colores a los botones (SOLO TEXTO) ---
+        // Como pediste, solo modificamos el 'Foreground' (color del texto)
+
+        // Botón Agregar (Verde)
         agregarButton.setForeground(new Color(40, 167, 69)); // Verde
+
+        // Botón Cancelar (Rojo)
         cancelarButton.setForeground(new Color(220, 53, 69)); // Rojo
 
+        // Agregamos los botones al panel
         buttonPanel.add(cancelarButton);
         buttonPanel.add(agregarButton);
 
-        // --- Ensamblar la ventana ---
+        // --- 3. Ensamblar la ventana ---
         mainPanel.add(fieldsPanel, BorderLayout.CENTER);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         setContentPane(mainPanel);
-    }
 
-    /**
-     * Configura las propiedades finales de este JDialog.
-     */
-    private void initDialog() {
+        // --- 4. Configuración final del JDialog ---
         pack(); // Ajusta el tamaño automáticamente
-        setLocationRelativeTo(getOwner()); // Centra sobre VentanaMain
+        setLocationRelativeTo(owner); // Centra sobre VentanaMain
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Cierra solo esta ventana
-    }
 
-    /**
-     * Asigna todos los ActionListeners a los componentes.
-     */
-    private void initListeners() {
+        // --- 5. Funcionalidad "Enter" ---
         // Hacemos que "Agregar" sea el botón por defecto al presionar Enter
         getRootPane().setDefaultButton(agregarButton);
 
+        // --- 6. Action Listeners ---
         agregarButton.addActionListener(e -> onAgregar());
         cancelarButton.addActionListener(e -> onCancelar());
     }
@@ -125,10 +120,11 @@ public class VentAgreLibro extends JDialog {
             }
 
             // 3. Convertir los números
-            int edicion = Integer.parseInt(edicionStr); // Puede lanzar NumberFormatException
-            int anio = Integer.parseInt(anioStr); // Puede lanzar NumberFormatException
+            int edicion = Integer.parseInt(edicionStr);
+            int anio = Integer.parseInt(anioStr);
 
             // 4. Validar que los números sean positivos
+            // (Asumimos que no manejamos libros A.C. o ediciones "0")
             if (edicion <= 0 || anio <= 0) {
                 JOptionPane.showMessageDialog(this,
                         "El año y la edición deben ser números positivos.",
@@ -148,11 +144,13 @@ public class VentAgreLibro extends JDialog {
             dispose(); // Cierra esta ventana
 
         } catch (NumberFormatException ex) {
+            // Se activa si parseInt() falla
             JOptionPane.showMessageDialog(this,
                     "La 'Edición' y el 'Año' deben ser números válidos.",
                     "Error de Formato",
                     JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
+            // Captura genérica para otros problemas
             JOptionPane.showMessageDialog(this,
                     "Error al agregar el libro: " + ex.getMessage(),
                     "Error",

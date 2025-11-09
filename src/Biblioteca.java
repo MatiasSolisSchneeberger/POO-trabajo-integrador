@@ -1,9 +1,9 @@
 import java.util.*; // Calendar, GregorianCalendar, ArrayList, HashMap, Map, Iterator, Set, LinkedHashSet
-
+import java.io.Serializable;
 /**
  * Clase Biblioteca
  */
-public class Biblioteca {
+public class Biblioteca implements java.io.Serializable{
 
     // ================= Atributos
     private String nombre;
