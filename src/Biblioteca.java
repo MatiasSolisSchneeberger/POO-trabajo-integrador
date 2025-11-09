@@ -252,7 +252,7 @@ public class Biblioteca {
             String lista = "Lista de Socios: \n";
             for (Map.Entry<Integer, Socio> e : this.getSocios().entrySet()) {
                 Socio s = e.getValue();
-            lista = s.toString() + "\n";
+            lista += s.toString() + "\n";
             }
             lista = lista
                 + "******\n"
