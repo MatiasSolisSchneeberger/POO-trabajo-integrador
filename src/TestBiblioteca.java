@@ -1,13 +1,14 @@
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
-import java.util.ArrayList; // <-- ¡ESTA LÍNEA FALTABA!
+import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Clase ejecutable para probar las funcionalidades de la clase Biblioteca.
  * Simula un sistema de gestión de biblioteca a través de un menú interactivo.
  *
- * @author Gemini
+ * @author ...
  * @version 04/11/2025
  */
 public class TestBiblioteca {
@@ -15,12 +16,13 @@ public class TestBiblioteca {
     // Scanner para la entrada de datos del usuario
     private static final Scanner scanner = new Scanner(System.in);
     // Instancia de la biblioteca para operar
-    private static final Biblioteca miBiblioteca = new Biblioteca("Biblioteca Central UNL");
+    //private static final Biblioteca miBiblioteca = new Biblioteca("Biblioteca Central UNL");
+    private static Biblioteca miBiblioteca;
 
     public static void main(String[] args) {
         // Inicialización de datos de prueba
-        inicializarDatos();
-
+        miBiblioteca = GestorPersistencia.cargar();
+        //inicializarDatos();
         int opcion;
         do {
             mostrarMenuPrincipal();
@@ -55,13 +57,13 @@ public class TestBiblioteca {
             }
 
         } while (opcion != 0);
-
+        GestorPersistencia.guardar(miBiblioteca);
         scanner.close();
     }
 
     /**
      * Inicializa algunos datos de ejemplo (socios y libros) para facilitar las pruebas.
-     */
+     
     private static void inicializarDatos() {
         System.out.println("🛠️ Inicializando datos de prueba...");
 
@@ -82,8 +84,25 @@ public class TestBiblioteca {
         miBiblioteca.nuevoLibro("Química Orgánica", 3, "Mc Graw Hill", 2010); // Duplicado para prueba
 
         System.out.println("✅ Datos de prueba cargados.\n");
+    } */
+    
+    /**
+     * Inicializa datos de ejemplo SOLO si la biblioteca estaba vacía (recién creada).
+     */
+    private static void inicializarDatos() {
+        // Verificar si la biblioteca está vacía para cargar los datos de prueba
+        if (miBiblioteca.getSocios().isEmpty() && miBiblioteca.getLibros().isEmpty()) {
+            System.out.println("🛠️ Inicializando datos de prueba...");
+            
+            // Socios Estudiantes
+            //miBiblioteca.nuevoSocioEstudiante(12345678, "Ana Garcia", "Ingeniería");
+            // ... (el resto de la inicialización sigue igual)
+            
+            System.out.println("✅ Datos de prueba cargados.\n");
+        } else {
+            System.out.println("ℹ️ Datos persistentes encontrados y cargados. Saltando inicialización.");
+        }
     }
-
     // --- Menús y Lógica de Interacción ---
 
     private static void mostrarMenuPrincipal() {
