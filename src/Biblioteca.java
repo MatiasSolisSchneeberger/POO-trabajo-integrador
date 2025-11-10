@@ -1,8 +1,11 @@
 import java.util.*; // Calendar, GregorianCalendar, ArrayList, HashMap, Map, Iterator, Set, LinkedHashSet
 import java.io.Serializable;
 /**
- * Clase Biblioteca
+ * Clase Biblioteca. Implementa la clase biblioteca con sus respectivos métodos y correcto funcionamiento.
+ * @author Fernandez, Gabriel Elías - González, Rodrigo Exequiel - Franco, Axel Damián.
+ * @version 04/11/2025
  */
+/**
 public class Biblioteca implements java.io.Serializable{
 
     // ================= Atributos
