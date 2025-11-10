@@ -327,10 +327,7 @@ public class Biblioteca implements java.io.Serializable{
     public String listaDeDocentesResponsables() {
         String docentes = "";
         for (Docente d : this.docentesResponsables()) {
-            docentes = d.toString()
-                    + " || "
-                    + "Libros Prestados: " + d.cantLibrosPrestados()
-                    + "\n";
+            docentes += d.toString() + "\n";
         }
         return docentes;
     }
