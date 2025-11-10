@@ -1,8 +1,12 @@
 import java.io.*;
 
 /**
- * Clase utilitaria para manejar la serialización de la clase Biblioteca completa.
+ * Sistema de permanencia de datos de la biblioteca.
+ *
+ * @author Fernandez, Gabriel Elías - Escobar, Lucas Joel.
+ * @version 07/11/2025
  */
+/**
 public class GestorPersistencia {
 
     private static final String NOMBRE_ARCHIVO = "datos_biblioteca.dat";
